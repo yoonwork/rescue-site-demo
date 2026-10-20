@@ -119,6 +119,7 @@ h2{font-size:21px;margin:0 0 14px;letter-spacing:-.02em}
 .ph .it{position:relative;border-radius:12px;overflow:hidden;background:#eee;aspect-ratio:1}
 .ph img{width:100%;height:100%;object-fit:cover;display:block}
 .ph .x{position:absolute;right:6px;top:6px;border:0;border-radius:999px;background:rgba(0,0,0,.6);color:#fff;width:26px;height:26px}
+.ph .mk{position:absolute;left:6px;bottom:24px;border:0;border-radius:6px;background:rgba(255,255,255,.9);font-size:11px;font-weight:700;padding:2px 6px}
 .ph .cover{position:absolute;left:6px;top:6px;background:var(--brand);color:#fff;font-size:11px;font-weight:700;border-radius:6px;padding:1px 6px}
 .ph .sz{position:absolute;left:0;right:0;bottom:0;background:rgba(0,0,0,.55);color:#fff;font-size:10.5px;padding:3px 6px}
 .toggle{display:flex;gap:8px;flex-wrap:wrap}
@@ -136,6 +137,15 @@ h2{font-size:21px;margin:0 0 14px;letter-spacing:-.02em}
 .doc li{margin:6px 0}
 
 @media (max-width:860px){
+  header.site .in{flex-wrap:wrap;height:auto;padding-top:10px;padding-bottom:6px;gap:8px}
+  .logo{flex:1}
+  .menu{order:3;flex-basis:100%;display:grid;grid-template-columns:repeat(3,1fr);gap:4px;overflow:visible;white-space:normal}
+  .menu button{min-height:44px;border-radius:10px;background:#fff;border:1px solid var(--line);font-size:13px}
+  .menu button.on{box-shadow:none;border-color:var(--brand);color:var(--brand-2)}
+  .cards{grid-template-columns:1fr 1fr;gap:10px}
+  #newsCards{grid-template-columns:1fr}
+  .acard .bd{padding:10px}
+  .acard .nm{font-size:15px}
   .hero,.detail,.fgrid{grid-template-columns:1fr}
   .filters{grid-template-columns:1fr 1fr}
   .filters input{grid-column:1/-1}
@@ -249,18 +259,19 @@ h2{font-size:21px;margin:0 0 14px;letter-spacing:-.02em}
 <!-- 구조 -->
 <section class="wrap doc" id="arch" hidden>
   <h1>방문자가 몰려도 안 다운되는 구조</h1>
-  <p class="muted">지금 사이트는 방문자가 늘 때마다 '서버 하나'가 모든 요청을 받아서 다운돼요. 새 구조에서는 방문자가 보는 화면을 미리 만들어 전 세계 CDN에 올려 둬서, 방문자가 아무리 몰려도 서버가 바빠지지 않아요.</p>
+  <p class="muted">홈페이지를 미리 인쇄해 전국 여러 지점에 나눠 두는 방식이에요. 방문자는 가까운 지점에서 받아 가니까 한 곳에 줄이 서지 않아요.</p>
   <div class="arch">
-    <div><b>① 운영진이 글·사진 올림</b><small>쉬운 관리자에서 저장 (DB + 사진 저장소)</small></div>
-    <div><b>② 사진 자동 최적화</b><small>올릴 때 큰 사진·작은 사진(썸네일)·웹용 형식으로 나눠 저장</small></div>
-    <div><b>③ 화면을 미리 만들어 배포</b><small>저장하면 1~2분 안에 홈페이지가 다시 만들어져 CDN에 올라감</small></div>
-    <div><b>④ 방문자는 CDN에서 받음</b><small>서버가 아니라 가까운 CDN 서버가 응답 → 몰려도 버팀</small></div>
+    <div><b>① 운영진이 글·사진 올림</b><small>쉬운 관리자에서 저장. 글은 DB(Supabase), 사진은 Cloudflare R2에</small></div>
+    <div><b>② 사진 자동 최적화</b><small>올릴 때 큰 사진·썸네일로 줄여 저장. 휴대폰 사진 그대로 올려도 돼요</small></div>
+    <div><b>③ 홈페이지를 다시 만들어 배포</b><small>저장을 모아서 보통 5분 안팎에 반영. 무료 빌드 한도(월 500회) 안에서 운영</small></div>
+    <div><b>④ 방문자는 CDN에서 받음</b><small>페이지와 사진은 Cloudflare CDN이 보내요. 서버가 바빠지지 않아요</small></div>
   </div>
   <ul>
-    <li><b>트래픽 한도:</b> 화면과 사진은 Cloudflare CDN으로 보내요. Cloudflare Pages는 정적 파일 전송량에 한도가 없어서, 구조 영상이 퍼져 방문자가 몰려도 '트래픽 초과로 다운'이 생기지 않아요.</li>
-    <li><b>이미지:</b> 업로드할 때 자동으로 줄이고, 목록에는 썸네일만, 화면에 보일 때만 불러와요(지연 로딩). 이 데모의 입양 목록이 그렇게 동작해요.</li>
-    <li><b>비공개 글:</b> 숨김·임시저장 글은 아예 공개 화면에 만들어지지 않아요. 링크를 알아도 볼 수 없어요(서버 단 차단).</li>
-    <li><b>장애 복구:</b> 배포할 때마다 이전 버전이 남아서 버튼 하나로 되돌려요. DB는 매일 자동 백업해요.</li>
+    <li><b>트래픽:</b> 페이지와 사진은 Cloudflare CDN의 정적 파일로 나가서 전송량·요청 수 한도가 없어요. 서버 코드가 도는 곳은 신청 폼 접수와 옛 주소 이동뿐이라 하루 10만 건 무료 한도에 비해 여유가 커요.</li>
+    <li><b>사진 비용:</b> 사진은 전송료가 없는 Cloudflare R2에 둬서, 구조 영상이 퍼져도 사진 전송 요금이 늘지 않아요.</li>
+    <li><b>비공개 글:</b> 숨김·임시저장 글은 공개 화면에 만들어지지 않고 DB 권한으로도 막아요. 예전 배포 주소와 미리보기 주소는 운영진만 열 수 있게 잠가요.</li>
+    <li><b>장애 복구:</b> 화면은 배포할 때마다 이전 버전이 남아 버튼 하나로 되돌려요. DB 자동 백업은 Supabase 유료 요금제(월 25달러~)에서 매일 돼요.</li>
+    <li><b>옛 주소:</b> 카페24의 '?no=123' 같은 옛 주소는 작은 Cloudflare 프로그램이 대응표를 보고 새 주소로 영구 이동(301)시켜요.</li>
     <li><b>플랫폼 종속 탈피:</b> 소스는 단체 소유 저장소에, 데이터는 표준 DB(PostgreSQL)에 둬서 언제든 다른 곳으로 옮길 수 있어요.</li>
   </ul>
 </section>
@@ -279,8 +290,9 @@ h2{font-size:21px;margin:0 0 14px;letter-spacing:-.02em}
   function ago(n){ var d = new Date(); d.setDate(d.getDate() - n); return ymd(d); }
   function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
   function safeUrl(u){ u = String(u || ''); return /^(https:\/\/|data:image\/(jpeg|png|webp);)/.test(u) ? u : ''; }
+  document.addEventListener('load', function(e){ if (e.target.tagName === 'IMG' && e.target.closest('.acard')) e.target.classList.add('ok'); }, true);
   function toast(m){ var t = document.getElementById('toast'); t.textContent = m; t.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(function(){ t.hidden = true; }, 2200); }
-  function ageText(m){ m = +m || 0; return m < 12 ? m + '개월' : Math.floor(m / 12) + '살' + (m % 12 ? ' ' + (m % 12) + '개월' : ''); }
+  function ageText(m){ if (m === '' || m == null) return '나이 미상'; m = +m || 0; return m < 12 ? m + '개월' : Math.floor(m / 12) + '살' + (m % 12 ? ' ' + (m % 12) + '개월' : ''); }
 
   function seed(){
     var A = [
@@ -317,7 +329,9 @@ h2{font-size:21px;margin:0 0 14px;letter-spacing:-.02em}
 
   // ---------- 페이지 ----------
   var current = 'home';
-  function go(p, id){
+  var PAGES = ['home','adopt','detail','about','activity','volunteer','donate','contact','admin','arch'];
+  function go(p, id, fromRoute){
+    if (PAGES.indexOf(p) < 0) p = 'home';
     var site = ['home','adopt','detail','about','activity','volunteer','donate','contact'];
     document.getElementById('site').hidden = site.indexOf(p) < 0;
     document.getElementById('admin').hidden = p !== 'admin';
@@ -334,24 +348,25 @@ h2{font-size:21px;margin:0 0 14px;letter-spacing:-.02em}
     }
     if (p === 'admin') showAdminList();
     current = p;
-    var h = p === 'detail' ? 'detail-' + id : p;
-    if (location.hash !== '#' + h) history.pushState(null, '', '#' + h);
+    var h = '#' + (p === 'detail' ? 'detail-' + id : p);
+    if (location.hash !== h){ if (fromRoute) history.replaceState(null, '', h); else history.pushState(null, '', h); }
     window.scrollTo(0, 0);
   }
-  function route(){ var h = (location.hash || '#home').slice(1), m = h.match(/^detail-(.+)$/); if (m) go('detail', m[1]); else go(h || 'home'); }
+  function route(){ var h = (location.hash || '#home').slice(1), m = h.match(/^detail-(.+)$/); if (m) go('detail', m[1], true); else go(h || 'home', null, true); }
   window.addEventListener('popstate', route);
   document.addEventListener('click', function(e){ var b = e.target.closest('[data-page]'); if (b){ go(b.dataset.page); } var g = e.target.closest('[data-go]'); if (g){ go(g.dataset.go); } });
 
   function visible(a){ return a.vis === 'pub' && !a.draft; }
+  function cls(s){ return SCLS[s] || 'b-ok'; }
   function card(a){
     var img = safeUrl(a.photos[0]);
-    return '<button class="acard" type="button" data-animal="' + esc(a.id) + '"><div class="im"><img loading="lazy" alt="' + esc(a.name) + '" src="' + esc(img) + '" onload="this.classList.add(\'ok\')"><span class="badge ' + SCLS[a.status] + '">' + esc(a.status) + '</span>' + (a.status === '입양 완료' ? '<div class="done-ribbon">입양 완료 ♥</div>' : '') + '</div>' +
+    return '<button class="acard" type="button" data-animal="' + esc(a.id) + '"><div class="im"><img loading="lazy" alt="' + esc(a.name) + '" src="' + esc(img) + '"><span class="badge ' + cls(a.status) + '">' + esc(a.status) + '</span>' + (a.status === '입양 완료' ? '<div class="done-ribbon">입양 완료 ♥</div>' : '') + '</div>' +
       '<div class="bd"><div class="nm">' + esc(a.name) + '</div><div class="meta">' + esc(a.kind) + ' · ' + esc(a.sex) + ' · ' + ageText(a.age) + ' · ' + esc(a.weight) + 'kg</div></div></button>';
   }
   function bindCards(root){ root.querySelectorAll('[data-animal]').forEach(function(b){ b.onclick = function(){ go('detail', b.dataset.animal); }; }); }
 
   function renderHome(){
-    document.getElementById('newsCards').innerHTML = db.news.map(function(n){ return '<div class="news"><div class="im"><img loading="lazy" src="' + esc(safeUrl(n.img)) + '" alt=""></div><div class="bd"><b>' + esc(n.t) + '</b><span class="small">' + n.d + '</span></div></div>'; }).join('');
+    document.getElementById('newsCards').innerHTML = db.news.map(function(n){ return '<div class="news"><div class="im"><img loading="lazy" src="' + esc(safeUrl(n.img)) + '" alt=""></div><div class="bd"><b>' + esc(n.t) + '</b><span class="small">' + esc(n.d) + '</span></div></div>'; }).join('');
     var el = document.getElementById('homeAnimals');
     el.innerHTML = db.animals.filter(function(a){ return visible(a) && a.status === '입양 가능'; }).slice(0, 4).map(card).join('');
     bindCards(el);
@@ -359,7 +374,7 @@ h2{font-size:21px;margin:0 0 14px;letter-spacing:-.02em}
 
   var F = ['q','fKind','fSex','fAge','fWeight','fStatus'].map(function(id){ return document.getElementById(id); });
   F.forEach(function(el){ el.addEventListener('input', renderList); el.addEventListener('change', renderList); });
-  function inRange(v, r){ if (!r) return true; var p = r.split('-'); return +v >= +p[0] && +v < +p[1]; }
+  function inRange(v, r){ if (!r) return true; if (v === '' || v == null) return false; var p = r.split('-'), hi = +p[1] >= 99 ? Infinity : +p[1]; return +v >= +p[0] && +v < hi; }
   function renderList(){
     var q = F[0].value.trim();
     var list = db.animals.filter(function(a){ return visible(a) && (!q || a.name.indexOf(q) >= 0) && (!F[1].value || a.kind === F[1].value) && (!F[2].value || a.sex === F[2].value) && inRange(a.age, F[3].value) && inRange(a.weight, F[4].value) && (!F[5].value || a.status === F[5].value); });
@@ -368,7 +383,7 @@ h2{font-size:21px;margin:0 0 14px;letter-spacing:-.02em}
     bindCards(el);
   }
 
-  function ytId(u){ var m = String(u || '').match(/(?:youtu\.be\/|v=|shorts\/)([\w-]{11})/); return m ? m[1] : ''; }
+  function ytId(u){ try { var x = new URL(u), h = x.hostname.replace(/^(www|m|music)\./, ''); if (h === 'youtu.be') return (x.pathname.slice(1).match(/^[\w-]{11}/) || [''])[0]; if (h !== 'youtube.com') return ''; if (x.searchParams.get('v')) return (x.searchParams.get('v').match(/^[\w-]{11}/) || [''])[0]; var m = x.pathname.match(/^\/(?:embed|shorts|live)\/([\w-]{11})/); return m ? m[1] : ''; } catch(e){ return ''; } }
   function renderDetail(id){
     var a = db.animals.filter(function(x){ return x.id === id; })[0], el = document.getElementById('p-detail');
     if (!a || !visible(a)){ el.innerHTML = '<div class="empty">공개되지 않았거나 없는 페이지예요.</div><p><button class="btn ghost" data-page="adopt" type="button">목록으로</button></p>'; return; }
@@ -376,7 +391,7 @@ h2{font-size:21px;margin:0 0 14px;letter-spacing:-.02em}
     var yt = ytId(a.video);
     el.innerHTML = '<p><button class="btn sm ghost" data-page="adopt" type="button">← 목록</button></p><div class="detail"><div class="gallery"><div class="main"><img id="mainImg" src="' + esc(ph[0] || '') + '" alt="' + esc(a.name) + '"></div><div class="thumbs">' + ph.map(function(p, i){ return '<button type="button" class="' + (i ? '' : 'on') + '" data-src="' + esc(p) + '"><img loading="lazy" src="' + esc(p) + '" alt=""></button>'; }).join('') + '</div>' +
       (yt ? '<div style="margin-top:12px;aspect-ratio:16/9;border-radius:14px;overflow:hidden"><iframe width="100%" height="100%" src="https://www.youtube-nocookie.com/embed/' + yt + '" title="영상" frameborder="0" allowfullscreen loading="lazy"></iframe></div>' : '') + '</div>' +
-      '<div><span class="badge ' + SCLS[a.status] + '">' + esc(a.status) + '</span><h1 style="margin-top:8px">' + esc(a.name) + '</h1>' +
+      '<div><span class="badge ' + cls(a.status) + '">' + esc(a.status) + '</span><h1 style="margin-top:8px">' + esc(a.name) + '</h1>' +
       '<dl class="kv"><dt>동물</dt><dd>' + esc(a.kind) + '</dd><dt>성별</dt><dd>' + esc(a.sex) + '</dd><dt>나이</dt><dd>' + ageText(a.age) + '</dd><dt>체중</dt><dd>' + esc(a.weight) + 'kg</dd><dt>건강</dt><dd>' + esc(a.health) + '</dd></dl>' +
       '<div class="box"><h3>구조 배경</h3><div class="muted" style="white-space:pre-wrap">' + esc(a.story) + '</div></div>' +
       (a.status === '입양 완료' && a.review ? '<div class="box review"><h3>♥ 입양 후기</h3><div style="white-space:pre-wrap">' + esc(a.review) + '</div></div>' : '') +
@@ -390,8 +405,8 @@ h2{font-size:21px;margin:0 0 14px;letter-spacing:-.02em}
   function showAdminList(){
     document.getElementById('adminList').hidden = false; document.getElementById('editForm').hidden = true;
     document.getElementById('alist').innerHTML = db.animals.map(function(a){
-      var st = a.draft ? '<span class="pill draft">임시저장</span>' : a.vis === 'pub' ? '<span class="pill pub">공개</span>' : '<span class="pill hidden">숨김</span>';
-      return '<div class="arow"><img src="' + esc(safeUrl(a.photos[0])) + '" alt="" loading="lazy"><div><div class="nm">' + esc(a.name) + st + '</div><div class="small"><span class="badge ' + SCLS[a.status] + '" style="font-size:11px">' + esc(a.status) + '</span> · 마지막 변경 ' + esc(a.updated) + '</div></div><button class="btn sm ghost" type="button" data-edit="' + esc(a.id) + '">고치기</button></div>';
+      var st = a.pending ? '<span class="pill pub">공개</span><span class="pill draft">고친 내용 임시저장</span>' : a.draft ? '<span class="pill draft">임시저장</span>' : a.vis === 'pub' ? '<span class="pill pub">공개</span>' : '<span class="pill hidden">숨김</span>';
+      return '<div class="arow"><img src="' + esc(safeUrl(a.photos[0])) + '" alt="" loading="lazy"><div><div class="nm">' + esc(a.name) + st + '</div><div class="small"><span class="badge ' + cls(a.status) + '" style="font-size:11px">' + esc(a.status) + '</span> · 마지막 변경 ' + esc(a.updated) + '</div></div><button class="btn sm ghost" type="button" data-edit="' + esc(a.id) + '">고치기</button></div>';
     }).join('');
     document.querySelectorAll('[data-edit]').forEach(function(b){ b.onclick = function(){ openEdit(b.dataset.edit); }; });
   }
@@ -407,7 +422,7 @@ h2{font-size:21px;margin:0 0 14px;letter-spacing:-.02em}
   }
   function openEdit(id){
     editing = id ? db.animals.filter(function(a){ return a.id === id; })[0] : null;
-    var a = editing || {name:'', kind:'개', sex:'수컷', age:'', weight:'', health:'', story:'', video:'', review:'', status:'입양 가능', vis:'pub', photos:[]};
+    var a = (editing && editing.pending) ? Object.assign({}, editing, editing.pending) : editing || {name:'', kind:'개', sex:'수컷', age:'', weight:'', health:'', story:'', video:'', review:'', status:'입양 가능', vis:'pub', photos:[]};
     document.getElementById('editTitle').textContent = editing ? a.name + ' 고치기' : '새 동물 등록';
     document.getElementById('eName').value = a.name; document.getElementById('eKind').value = a.kind; document.getElementById('eSex').value = a.sex;
     document.getElementById('eAge').value = a.age; document.getElementById('eWeight').value = a.weight; document.getElementById('eHealth').value = a.health;
@@ -423,22 +438,30 @@ h2{font-size:21px;margin:0 0 14px;letter-spacing:-.02em}
   function kb(n){ return n > 1048576 ? (n / 1048576).toFixed(1) + 'MB' : Math.round(n / 1024) + 'KB'; }
   function paintPhotos(){
     var el = document.getElementById('photos');
-    el.innerHTML = ePhotos.map(function(p, i){ return '<div class="it"><img src="' + esc(safeUrl(p.src)) + '" alt="">' + (i ? '' : '<span class="cover">대표</span>') + '<button type="button" class="x" data-del="' + i + '" aria-label="사진 빼기">×</button>' + (p.before ? '<span class="sz">' + kb(p.before) + ' → ' + kb(p.after) + '</span>' : '') + '</div>'; }).join('');
+    el.innerHTML = ePhotos.map(function(p, i){ return '<div class="it"><img src="' + esc(safeUrl(p.src)) + '" alt="">' + (i ? '<button type="button" class="mk" data-cover="' + i + '">대표로</button>' : '<span class="cover">대표</span>') + '<button type="button" class="x" data-del="' + i + '" aria-label="사진 빼기">×</button>' + (p.before ? '<span class="sz">' + kb(p.before) + ' → ' + kb(p.after) + '</span>' : '') + '</div>'; }).join('');
     el.querySelectorAll('[data-del]').forEach(function(b){ b.onclick = function(){ ePhotos.splice(+b.dataset.del, 1); paintPhotos(); }; });
+    el.querySelectorAll('[data-cover]').forEach(function(b){ b.onclick = function(){ var p = ePhotos.splice(+b.dataset.cover, 1)[0]; ePhotos.unshift(p); paintPhotos(); toast('대표 사진을 바꿨어요'); }; });
   }
   function addFiles(files){
-    var list = [].slice.call(files).filter(function(f){ return /^image\//.test(f.type); }), done = 0, bad = 0;
-    if (!list.length) return;
-    list.forEach(function(f){
-      var r = new FileReader();
-      r.onerror = function(){ bad++; fin(); };
-      r.onload = function(){ var im = new Image(); im.onerror = function(){ bad++; fin(); }; im.onload = function(){
-        var s = Math.min(1, 1000 / Math.max(im.width, im.height)), c = document.createElement('canvas');
-        c.width = Math.round(im.width * s); c.height = Math.round(im.height * s); c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
-        var url = c.toDataURL('image/jpeg', .78); ePhotos.push({src:url, before:f.size, after:Math.round(url.length * .75)}); fin(); }; im.src = r.result; };
-      r.readAsDataURL(f);
-    });
-    function fin(){ if (++done < list.length) return; paintPhotos(); toast((list.length - bad) + '장을 올렸어요. 자동으로 가볍게 줄였어요' + (bad ? ' (' + bad + '장은 열 수 없는 형식이에요)' : '')); }
+    var all = [].slice.call(files), list = all.filter(function(f){ return /^image\//.test(f.type); }), skipped = all.length - list.length, bad = 0, ok = 0;
+    if (!list.length){ if (skipped) toast('사진 파일만 올릴 수 있어요 (아이폰 HEIC는 JPG로 바꿔 주세요)'); return; }
+    var target = ePhotos, i = 0;
+    toast('사진 ' + list.length + '장을 줄이는 중이에요…');
+    (function next(){
+      if (i >= list.length){ if (target === ePhotos) paintPhotos(); toast(ok + '장을 올렸어요. 자동으로 가볍게 줄였어요' + (bad + skipped ? ' (' + (bad + skipped) + '장은 열 수 없는 형식이에요)' : '')); return; }
+      var f = list[i++], u = URL.createObjectURL(f), im = new Image();
+      im.onload = function(){
+        var s = Math.min(1, 900 / Math.max(im.width, im.height)), c = document.createElement('canvas');
+        c.width = Math.round(im.width * s); c.height = Math.round(im.height * s);
+        var x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, c.width, c.height); x.drawImage(im, 0, 0, c.width, c.height);
+        URL.revokeObjectURL(u);
+        var url = c.toDataURL('image/jpeg', .72);
+        if (target === ePhotos){ target.push({src:url, before:f.size, after:Math.round(url.length * .75)}); ok++; }
+        next();
+      };
+      im.onerror = function(){ URL.revokeObjectURL(u); bad++; next(); };
+      im.src = u;
+    })();
   }
   var drop = document.getElementById('drop');
   document.getElementById('file').onchange = function(e){ addFiles(e.target.files); e.target.value = ''; };
@@ -453,14 +476,24 @@ h2{font-size:21px;margin:0 0 14px;letter-spacing:-.02em}
   function persist(draft){
     var d = collect(), today = ymd(new Date());
     if (!d.name){ toast('이름을 적어 주세요'); document.getElementById('eName').focus(); return; }
+    var ageRaw = document.getElementById('eAge').value, wRaw = document.getElementById('eWeight').value;
+    d.age = ageRaw === '' ? '' : Math.max(0, Math.min(300, Math.round(+ageRaw)));
+    d.weight = wRaw === '' ? 0 : Math.max(0, Math.min(99, +wRaw));
     if (!draft && !d.photos.length){ toast('사진을 한 장 이상 올려 주세요 (임시저장은 사진 없이도 돼요)'); return; }
-    var a = editing;
-    if (!a){ a = {id:'a' + Date.now(), history:[{date:today, text:'등록'}]}; db.animals.unshift(a); }
-    else if (a.status !== d.status){ a.history.push({date:today, text:'입양 상태: ' + a.status + ' → ' + d.status}); }
-    if (editing && a.vis !== d.vis) a.history.push({date:today, text:d.vis === 'pub' ? '공개로 바꿈' : '숨김으로 바꿈'});
-    Object.assign(a, d, {draft:!!draft, updated:today});
-    if (!save()){ toast('데모 저장 공간이 꽉 찼어요. 사진을 줄여 주세요 (실제 서비스는 서버에 저장해요)'); return; }
-    toast(draft ? '임시저장했어요. 홈페이지에는 아직 안 보여요' : (d.vis === 'pub' ? '저장했어요. 홈페이지에 바로 반영돼요' : '저장했어요. 숨김이라 홈페이지에는 안 보여요'));
+    var snap = JSON.stringify(db), a = editing;
+    if (draft && a && !a.draft){
+      a.pending = d;
+    } else {
+      if (!a){ a = {id:'a' + Date.now(), history:[]}; db.animals.unshift(a); }
+      if (!draft){
+        if (!a.history.length) a.history.push({date:today, text:'등록'});
+        else if (a.status && a.status !== d.status) a.history.push({date:today, text:'입양 상태: ' + a.status + ' → ' + d.status});
+        if (a.vis && a.vis !== d.vis) a.history.push({date:today, text:d.vis === 'pub' ? '공개로 바꿈' : '숨김으로 바꿈'});
+      }
+      Object.assign(a, d, {draft:!!draft, updated:today}); delete a.pending;
+    }
+    if (!save()){ db = JSON.parse(snap); toast('데모 저장 공간이 꽉 찼어요. 사진 수를 줄여 주세요 (실제 서비스는 서버에 저장해요)'); return; }
+    toast(draft ? (a.pending ? '임시저장했어요. 홈페이지에는 이전 내용이 그대로 보여요' : '임시저장했어요. 홈페이지에는 아직 안 보여요') : (d.vis === 'pub' ? '저장했어요. 몇 분 안에 홈페이지에 반영돼요' : '저장했어요. 숨김이라 홈페이지에는 안 보여요'));
     showAdminList();
   }
   document.getElementById('saveDraft').onclick = function(){ persist(true); };
