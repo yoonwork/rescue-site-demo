@@ -7,252 +7,358 @@
 <title>동물구조단체 홈페이지 데모</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.min.css">
 <style>
-:root{--bg:#fbfaf7;--card:#fff;--ink:#1f2328;--ink-2:#57606a;--ink-3:#8c959f;--line:#e8e4dc;--brand:#e2683c;--brand-2:#c9552c;--green:#2f8f5b;--green-bg:#e5f4ec;--amber:#a36b00;--amber-bg:#fff2d6;--blue:#2b6cb0;--blue-bg:#e6f0fb;--gray:#6e7781;--gray-bg:#eef0f2;color-scheme:light}
+/* 색·글자·간격 토큰 — 흰 배경 + 올리브 포인트 + 라임 CTA */
+:root{
+  --bg:#fff; --soft:#f6f6f3; --card:#fff; --line:#ebebe6; --line-2:#f1f1ed;
+  --ink:#1c1f17; --ink-2:#4f5349; --ink-3:#6b6f64;
+  --brand:#3d4b2a; --brand-2:#2c3820; --brand-soft:#eef1e3; --lime:#d6e35a;
+  --ok:#2f6b2a; --ok-bg:#e9f2e2; --rev:#8a5a00; --rev-bg:#fdf1d8; --fos:#2b5c99; --fos-bg:#e6eef9; --done:#5a626b; --done-bg:#eff0f2;
+  --heart:#e0533c;
+  --r-sm:12px; --r:16px; --r-lg:22px;
+  --shadow:0 1px 2px rgba(28,31,23,.04),0 4px 14px rgba(28,31,23,.05);
+  color-scheme:light;
+}
 *{box-sizing:border-box}
 html,body{margin:0}
-body{background:var(--bg);color:var(--ink);font-family:Pretendard,-apple-system,"Apple SD Gothic Neo",sans-serif;font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;padding-bottom:calc(64px + env(safe-area-inset-bottom))}
+body{background:var(--bg);color:var(--ink);font-family:Pretendard,-apple-system,"Apple SD Gothic Neo",sans-serif;font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;padding-bottom:calc(64px + env(safe-area-inset-bottom))}
 button,input,select,textarea{font:inherit;color:inherit}
 button{cursor:pointer}
 a{color:inherit}
 [hidden]{display:none!important}
+svg{flex:none}
+.wrap{max-width:1120px;margin:0 auto;padding:24px 16px}
+h1{font-size:clamp(28px,4vw,40px);line-height:1.2;margin:0 0 12px;letter-spacing:-.03em}
+h2{font-size:20px;margin:0;letter-spacing:-.02em}
+h3{font-size:16px;margin:0 0 8px}
+.muted{color:var(--ink-2)}
+.small{font-size:14px;color:var(--ink-3)}
+.ex{font-size:12px;color:var(--ink-3);font-weight:500}
 
-.demobar{position:fixed;left:0;right:0;bottom:0;z-index:60;background:#22262b;color:#d0d4d9;font-size:12.5px;padding:8px 14px calc(8px + env(safe-area-inset-bottom));display:flex;gap:6px;align-items:center;flex-wrap:wrap}
-.demobar b{background:#f2d36b;color:#111;border-radius:4px;padding:1px 7px;font-size:11.5px}
+/* 버튼 */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:999px;padding:12px 20px;min-height:44px;font-weight:700;background:var(--brand);color:#fff;text-decoration:none}
+.btn:hover{background:var(--brand-2)}
+.btn.lime{background:var(--lime);color:var(--ink)}
+.btn.lime:hover{background:#c8d64a}
+.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.btn.ghost:hover{background:var(--soft)}
+.btn.sm{padding:10px 16px;font-size:14px}
+.btn.block{width:100%}
+.icon-btn svg{fill:none}
+.icon-btn[aria-pressed="true"]{color:var(--heart)!important}
+.icon-btn[aria-pressed="true"] svg{fill:var(--heart)}
+.icon-btn{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:#fff;display:inline-grid;place-items:center;color:var(--ink-2)}
+.link-btn{border:0;background:none;font-weight:700;font-size:14px;color:var(--ink-2);padding:12px 4px;min-height:44px}
+
+/* 데모 안내 띠 */
+.demobar{position:fixed;left:0;right:0;bottom:0;z-index:60;background:#22262b;color:#d0d4d9;font-size:13px;padding:8px 14px calc(8px + env(safe-area-inset-bottom));display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.demobar b{background:#f2d36b;color:#111;border-radius:4px;padding:1px 7px;font-size:12px}
 .demobar .sp{flex:1}
-.demobar button{border:0;border-radius:7px;padding:6px 11px;font-size:12.5px;font-weight:600;background:#363b41;color:#fff}
+.demobar button{border:0;border-radius:8px;padding:7px 12px;font-size:13px;font-weight:600;background:#363b41;color:#fff;min-height:36px}
 .demobar button.on{background:#fff;color:#111}
 
-header.site{position:sticky;top:0;z-index:40;background:rgba(251,250,247,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
-header.site .in{max-width:1120px;margin:0 auto;padding:0 16px;height:60px;display:flex;align-items:center;gap:18px}
-.logo{font-weight:900;font-size:18px;letter-spacing:-.02em;display:flex;align-items:center;gap:8px;cursor:pointer}
-.logo i{font-style:normal;width:30px;height:30px;border-radius:50%;background:var(--brand);color:#fff;display:grid;place-items:center;font-size:16px}
-.menu{display:flex;gap:16px;flex:1;overflow-x:auto;white-space:nowrap;font-size:14px;color:var(--ink-2);scrollbar-width:none}
-.menu button{border:0;background:none;padding:4px 0}
-.menu button.on{color:var(--ink);font-weight:700;box-shadow:inset 0 -2px 0 var(--brand)}
-.lang{border:1px solid var(--line);background:#fff;border-radius:999px;padding:5px 11px;font-size:12.5px;font-weight:700}
-.wrap{max-width:1120px;margin:0 auto;padding:24px 16px}
-h1{font-size:clamp(26px,4vw,40px);line-height:1.2;margin:0 0 10px;letter-spacing:-.03em}
-h2{font-size:21px;margin:0 0 14px;letter-spacing:-.02em}
-.muted{color:var(--ink-2)}
-.small{font-size:12.5px;color:var(--ink-3)}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:0;border-radius:12px;padding:12px 18px;font-weight:700;background:var(--brand);color:#fff;text-decoration:none}
-.btn:hover{background:var(--brand-2)}
-.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
-.btn.sm{padding:7px 12px;font-size:13px;border-radius:9px}
-.btn.big{padding:16px 22px;font-size:17px;border-radius:14px}
+/* 헤더 */
+header.site{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+header.site .in{max-width:1120px;margin:0 auto;padding:0 16px;height:64px;display:flex;align-items:center;gap:20px}
+.logo{font-weight:900;font-size:18px;letter-spacing:-.02em;display:flex;align-items:center;gap:8px;cursor:pointer;border:0;background:none;padding:0;white-space:nowrap}
+.logo i{width:32px;height:32px;border-radius:50%;background:var(--brand);color:#fff;display:grid;place-items:center}
+.menu{display:flex;gap:4px;flex:1;justify-content:center}
+.menu button{border:0;background:none;padding:10px 12px;border-radius:999px;font-size:15px;color:var(--ink-2);font-weight:600;min-height:44px}
+.menu button:hover{background:var(--soft)}
+.menu button.on{color:var(--brand);background:var(--brand-soft)}
+.lang{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 14px;min-height:40px;font-size:13px;font-weight:800}
 
-/* 메인 */
-.hero{display:grid;grid-template-columns:1.1fr 1fr;gap:28px;align-items:center;padding:30px 16px 10px;max-width:1120px;margin:0 auto}
-.hero .photo{aspect-ratio:4/3;border-radius:22px;overflow:hidden;background:#e9e3d8}
-.hero .photo img{width:100%;height:100%;object-fit:cover;display:block}
-.stats{display:flex;gap:22px;margin:16px 0 20px;flex-wrap:wrap}
-.stats b{display:block;font-size:24px;color:var(--brand)}
-.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px}
-.news{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden}
-.news .im{aspect-ratio:16/10;background:var(--c,#eee)}
+/* 카드 공통 */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow)}
+.sec-h{display:flex;align-items:center;justify-content:space-between;margin:40px 0 16px}
+
+/* 홈 */
+.home-top{display:grid;gap:16px;padding-top:20px}
+.greet{display:flex;align-items:center;gap:12px}
+.greet .av{width:44px;height:44px;border-radius:50%;background:var(--lime);color:var(--brand);display:grid;place-items:center}
+.greet b{display:block;font-size:16px}
+.greet span{font-size:14px;color:var(--ink-3)}
+.search{display:flex;gap:8px}
+.search input{flex:1;min-width:0;border:1px solid var(--line);background:var(--soft);border-radius:14px;padding:13px 14px;font-size:16px}
+.search button{width:52px;border:0;border-radius:14px;background:var(--brand);color:#fff;display:grid;place-items:center}
+.banner{position:relative;border-radius:var(--r-lg);overflow:hidden;color:#fff;padding:28px 24px;min-height:240px;display:flex;flex-direction:column;justify-content:flex-end;background:#2b2f25}
+.banner>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.banner::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(20,24,16,.78) 0%,rgba(20,24,16,.35) 55%,rgba(20,24,16,.05) 100%)}
+.banner>:not(img){position:relative;z-index:1;max-width:540px}
+.banner h1{color:#fff}
+.banner p{color:#eef0e8;margin:0 0 16px}
+.quick{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.quick button{border:1px solid var(--line);background:#fff;border-radius:var(--r);padding:16px 8px;font-weight:700;font-size:14px;display:flex;flex-direction:column;align-items:center;gap:8px;box-shadow:var(--shadow);text-align:center}
+.quick button i{width:44px;height:44px;border-radius:14px;background:var(--brand-soft);display:grid;place-items:center;color:var(--brand)}
+.quick button small{display:none;font-weight:500;color:var(--ink-3)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:18px;border-radius:var(--r);background:var(--soft)}
+.stats b{display:block;font-size:28px;color:var(--brand);letter-spacing:-.02em}
+.stats span{font-size:14px;color:var(--ink-3)}
+.news-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.news{overflow:hidden;cursor:default}
+.news .im{aspect-ratio:16/10;margin:8px 8px 0;border-radius:14px;overflow:hidden;background:var(--soft);position:relative}
 .news .im img{width:100%;height:100%;object-fit:cover;display:block}
-.news .bd{padding:12px 14px}
-.news .bd b{display:block;margin-bottom:4px}
-.float{position:fixed;right:16px;bottom:calc(76px + env(safe-area-inset-bottom));z-index:45;display:flex;flex-direction:column;gap:8px}
-.float button{border:0;border-radius:999px;padding:10px 15px;font-weight:700;font-size:13.5px;box-shadow:0 6px 18px rgba(0,0,0,.14);background:#fff}
-.float button.p{background:var(--brand);color:#fff}
+.news .bd{padding:12px 16px 16px}
+.news .bd b{display:block;margin-bottom:4px;line-height:1.4}
+
+/* 입양 카드 */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px}
+.acard{position:relative;cursor:pointer;border:1px solid var(--line);background:#fff;border-radius:var(--r-lg);box-shadow:var(--shadow);overflow:hidden}
+.acard:focus-visible{outline:3px solid var(--brand);outline-offset:2px}
+.acard .im{position:relative;aspect-ratio:1;margin:8px 8px 0;border-radius:var(--r);overflow:hidden;background:var(--soft)}
+.acard .im img{width:100%;height:100%;object-fit:cover;display:block;opacity:0;transition:opacity .35s}
+.acard .im img.ok{opacity:1}
+.ph-fallback{position:absolute;inset:0;display:grid;place-items:center;color:#c9ccc2}
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;border-radius:999px;padding:4px 10px;white-space:nowrap}
+.badge::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.b-ok{background:var(--ok-bg);color:var(--ok)}
+.b-rev{background:var(--rev-bg);color:var(--rev)}
+.b-fos{background:var(--fos-bg);color:var(--fos)}
+.b-done{background:var(--done-bg);color:var(--done)}
+.acard .im .badge{position:absolute;left:8px;top:8px;z-index:2;background:rgba(255,255,255,.94)}
+.fav{position:absolute;right:6px;top:6px;z-index:3;width:44px;height:44px;border-radius:50%;border:0;background:transparent;display:grid;place-items:center;color:var(--ink-2)}
+.fav::before{content:"";position:absolute;inset:4px;border-radius:50%;background:rgba(255,255,255,.94)}
+.fav svg{position:relative;fill:none}
+.fav.on{color:var(--heart)}
+.fav.on svg{fill:var(--heart)}
+.done-ribbon{position:absolute;inset:0;z-index:1;background:rgba(255,255,255,.55);display:grid;place-items:center;font-weight:900;font-size:20px;color:#3a3d36}
+.acard .bd{padding:12px 16px 16px}
+.acard .nm{font-weight:800;font-size:17px}
+.acard .nm .kind{font-size:13px;font-weight:600;color:var(--ink-3);margin-left:4px}
+.acard .meta{display:flex;flex-wrap:nowrap;gap:10px;margin-top:6px;font-size:14px;color:var(--ink-2);overflow:hidden}
+.acard .meta span{display:inline-flex;align-items:center;gap:4px;white-space:nowrap}
+.acard .meta svg{color:var(--ink-3)}
+.empty{padding:32px;text-align:center;color:var(--ink-3);background:var(--soft);border-radius:var(--r)}
 
 /* 입양 목록 */
-.filters{display:grid;grid-template-columns:2fr repeat(5,1fr);gap:8px;margin-bottom:16px}
-.filters input,.filters select{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;min-width:0}
-.acard{display:block;width:100%;text-align:left;border:1px solid var(--line);background:#fff;border-radius:16px;overflow:hidden;padding:0}
-.acard .im{position:relative;aspect-ratio:1;background:var(--c,#eee)}
-.acard .im img{width:100%;height:100%;object-fit:cover;display:block;opacity:0;transition:opacity .4s}
-.acard .im img.ok{opacity:1}
-.acard .bd{padding:12px 14px}
-.acard .nm{font-weight:800;font-size:16px}
-.acard .meta{font-size:13px;color:var(--ink-2)}
-.badge{display:inline-flex;align-items:center;font-size:12px;font-weight:700;border-radius:999px;padding:3px 9px}
-.b-ok{background:var(--green-bg);color:var(--green)}
-.b-rev{background:var(--amber-bg);color:var(--amber)}
-.b-done{background:var(--gray-bg);color:var(--gray)}
-.b-foster{background:var(--blue-bg);color:var(--blue)}
-.acard .im .badge{position:absolute;left:10px;top:10px}
-.done-ribbon{position:absolute;inset:0;background:rgba(255,255,255,.55);display:grid;place-items:center;font-weight:900;font-size:22px;color:#444;letter-spacing:.05em}
-.empty{padding:30px;text-align:center;color:var(--ink-3);background:#fff;border:1px dashed var(--line);border-radius:14px}
+.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:8px 0 24px;counter-reset:s}
+.steps div{background:var(--soft);border-radius:var(--r);padding:14px 12px;font-size:14px;counter-increment:s}
+.steps div::before{content:counter(s);display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--brand);color:#fff;font-weight:800;font-size:12px;margin-bottom:6px}
+.steps b{display:block}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:2px 0 6px;margin-bottom:8px;scrollbar-width:none}
+.chips button{flex:none;border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 16px;min-height:44px;font-size:14px;font-weight:600}
+.chips button.on{background:var(--brand);color:#fff;border-color:var(--brand)}
+.more-box{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:8px;margin:4px 0 16px}
+.more-box input,.more-box select{width:100%;padding:12px;border:1px solid var(--line);border-radius:var(--r-sm);background:#fff;min-width:0}
 
 /* 상세 */
-.detail{display:grid;grid-template-columns:1.2fr 1fr;gap:26px;align-items:start}
-.gallery .main{aspect-ratio:4/3;border-radius:18px;overflow:hidden;background:var(--c,#eee)}
+.detail{display:grid;grid-template-columns:1.15fr 1fr;gap:32px;align-items:start}
+.gallery .main{aspect-ratio:1;border-radius:var(--r-lg);overflow:hidden;background:var(--soft);position:relative}
 .gallery .main img{width:100%;height:100%;object-fit:cover;display:block}
 .thumbs{display:flex;gap:8px;margin-top:8px;overflow-x:auto}
-.thumbs button{border:2px solid transparent;border-radius:10px;padding:0;overflow:hidden;width:72px;height:72px;flex:none;background:#eee}
+.thumbs button{border:2px solid transparent;border-radius:12px;padding:0;overflow:hidden;width:72px;height:72px;flex:none;background:var(--soft);position:relative}
 .thumbs button.on{border-color:var(--brand)}
 .thumbs img{width:100%;height:100%;object-fit:cover;display:block}
-.kv{display:grid;grid-template-columns:90px 1fr;gap:6px 12px;margin:14px 0}
-.kv dt{color:var(--ink-3)}
-.kv dd{margin:0}
-.box{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:12px}
-.box h3{margin:0 0 6px;font-size:15px}
-.review{background:#fff6ef;border-color:#f3d6c5}
-.notice{background:var(--amber-bg);color:#6b4a00;border-radius:12px;padding:12px 14px;font-weight:600}
-.hist{margin:0;padding-left:18px;font-size:13px;color:var(--ink-2)}
+.info{position:sticky;top:84px}
+.namebar h1{margin:6px 0 2px}
+.info-chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.info-chips span{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 12px;font-size:14px;font-weight:600}
+.info-chips svg{color:var(--brand)}
+.box{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;margin-bottom:12px}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tags span{background:var(--brand-soft);color:var(--brand);border-radius:999px;padding:5px 11px;font-size:14px;font-weight:600}
+.notice{border-radius:var(--r);padding:14px 16px;font-weight:600;margin-bottom:12px}
+.notice.rev{background:var(--rev-bg);color:#6b4600}
+.notice.done{background:var(--done-bg);color:#3f454b}
+.notice.fos{background:var(--fos-bg);color:#244b7d}
+.apply-row{display:flex;gap:8px;margin:4px 0 12px}
+.apply-row .btn{flex:1}
+.timeline{list-style:none;margin:0;padding:0}
+.timeline li{position:relative;padding:0 0 14px 22px;font-size:14px;color:var(--ink-2)}
+.timeline li::before{content:"";position:absolute;left:5px;top:6px;width:9px;height:9px;border-radius:50%;background:var(--brand)}
+.timeline li::after{content:"";position:absolute;left:9px;top:18px;bottom:0;width:1px;background:var(--line)}
+.timeline li:last-child::after{display:none}
+.timeline b{display:block;color:var(--ink);font-weight:700}
+.video-slot{margin-top:12px;aspect-ratio:16/9;border-radius:var(--r);overflow:hidden;background:var(--soft);display:grid;place-items:center;color:var(--ink-3);font-size:14px;text-align:center;padding:16px;border:1px dashed var(--line)}
+.hscroll{display:grid;grid-auto-flow:column;grid-auto-columns:200px;gap:12px;overflow-x:auto;padding-bottom:6px;scroll-snap-type:x mandatory}
+.hscroll .acard{scroll-snap-align:start}
 
-/* 관리자 */
-.admin{background:#f3f4f6;min-height:100vh}
-.admin-top{background:#fff;border-bottom:1px solid #e3e5e8;position:sticky;top:0;z-index:40}
-.admin-top .in{max-width:1120px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.admin-top h2{margin:0;font-size:18px;flex:1}
+/* 일반 페이지 */
+.page-head{padding-top:24px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.tile{padding:20px}
+.tile i{width:44px;height:44px;border-radius:14px;background:var(--brand-soft);color:var(--brand);display:grid;place-items:center;margin-bottom:10px}
+.tile h3{font-size:18px}
+.tabs{display:flex;gap:6px;background:var(--soft);padding:4px;border-radius:999px;width:max-content;max-width:100%;overflow-x:auto;margin:8px 0 16px}
+.tabs button{border:0;background:transparent;border-radius:999px;padding:10px 18px;font-weight:700;color:var(--ink-2);min-height:44px;white-space:nowrap}
+.tabs button.on{background:#fff;color:var(--ink);box-shadow:var(--shadow)}
+.amounts{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.amounts button{border:1px solid var(--line);background:#fff;border-radius:var(--r-sm);padding:12px 18px;font-weight:700;min-height:48px}
+.amounts button.on{border-color:var(--brand);background:var(--brand-soft);color:var(--brand)}
+.form{display:grid;gap:12px}
+.form label{display:block;font-weight:700;font-size:14px;margin-bottom:6px}
+.form input,.form select,.form textarea{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:var(--r-sm);background:#fff;font-size:16px}
+.form textarea{min-height:100px;resize:vertical}
+.form .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.agree{display:flex!important;gap:10px;align-items:flex-start;font-size:14px;color:var(--ink-2);font-weight:500!important}
+.agree input{width:20px!important;height:20px;margin-top:2px;flex:none}
+.faq details{border-bottom:1px solid var(--line);padding:4px 0}
+.faq summary{cursor:pointer;font-weight:700;padding:14px 4px;list-style:none;display:flex;justify-content:space-between;gap:12px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";color:var(--ink-3);font-size:20px;line-height:1}
+.faq details[open] summary::after{content:"–"}
+.faq p{margin:0 4px 14px;color:var(--ink-2)}
+.list-row{display:flex;justify-content:space-between;gap:12px;padding:14px 4px;border-bottom:1px solid var(--line)}
+.list-row span{color:var(--ink-3);font-size:14px;white-space:nowrap}
+.history{list-style:none;margin:0;padding:0}
+.history li{display:grid;grid-template-columns:90px 1fr;gap:12px;padding:10px 0;border-bottom:1px solid var(--line-2)}
+.history b{color:var(--brand)}
+
+/* 푸터 */
+footer.site{border-top:1px solid var(--line);margin-top:48px;background:var(--soft)}
+footer.site .in{max-width:1120px;margin:0 auto;padding:28px 16px 32px;display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:20px;font-size:14px;color:var(--ink-2)}
+footer.site b{color:var(--ink)}
+footer.site a{text-decoration:underline;text-underline-offset:3px}
+
+/* 떠 있는 버튼(PC), 아래 탭(휴대폰), 메뉴 시트 */
+.float{position:fixed;right:18px;bottom:calc(76px + env(safe-area-inset-bottom));z-index:45;display:flex;flex-direction:column;gap:8px}
+.float button{border:1px solid var(--line);border-radius:999px;padding:12px 18px;font-weight:700;font-size:14px;box-shadow:0 6px 18px rgba(0,0,0,.10);background:#fff;min-height:44px}
+.float button.p{background:var(--brand);color:#fff;border-color:var(--brand)}
+.tabbar{display:none}
+.sheet-bg{position:fixed;inset:0;z-index:80;background:rgba(20,22,18,.35);display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:#fff;width:100%;max-width:520px;border-radius:22px 22px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom))}
+.sheet .grid3{gap:8px;grid-template-columns:repeat(3,1fr)}
+.sheet button.m{border:1px solid var(--line);background:#fff;border-radius:var(--r);padding:16px 8px;font-weight:700;display:flex;flex-direction:column;align-items:center;gap:6px;min-height:84px;font-size:14px}
+.sheet button.m svg{color:var(--brand)}
+
+/* 모달 */
+.modal-bg{position:fixed;inset:0;z-index:90;background:rgba(20,22,18,.45);display:grid;place-items:center;padding:16px}
+.modal{background:#fff;border-radius:var(--r-lg);width:100%;max-width:520px;max-height:calc(100vh - 32px);overflow:auto;padding:22px}
+.modal h2{margin-bottom:6px}
+.toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));transform:translateX(-50%);background:#1c1f17;color:#fff;padding:12px 18px;border-radius:12px;font-size:14px;z-index:100;max-width:90vw}
+
+/* 쉬운 관리자 */
+.admin{background:var(--bg);min-height:100vh}
+.admin-top{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:40}
+.admin-top .in{max-width:1120px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;gap:10px}
+.admin-top h2{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .alist{display:grid;gap:10px}
-.arow{display:grid;grid-template-columns:64px 1fr auto;gap:12px;align-items:center;background:#fff;border:1px solid #e3e5e8;border-radius:14px;padding:10px 12px}
-.arow img{width:64px;height:64px;border-radius:10px;object-fit:cover;background:#eee}
+.arow{display:grid;grid-template-columns:64px 1fr auto 20px;gap:12px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:10px 12px;cursor:pointer;box-shadow:var(--shadow)}
+.arow:hover{border-color:#d9dbd2}
+.arow img{width:64px;height:64px;border-radius:12px;object-fit:cover;background:var(--soft)}
 .arow .nm{font-weight:800}
-.pill{font-size:11.5px;font-weight:700;border-radius:999px;padding:2px 8px;margin-left:4px}
-.pill.draft{background:#fff1c2;color:#7a5a00}
-.pill.hidden{background:#e8e8e8;color:#555}
-.pill.pub{background:#dff3e7;color:#22764a}
-.edit{background:#fff;border:1px solid #e3e5e8;border-radius:16px;padding:18px}
-.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.f label{display:block;font-weight:700;font-size:14px;margin-bottom:6px}
-.f input,.f select,.f textarea{width:100%;padding:12px;border:1px solid #d9dce1;border-radius:12px;background:#fff;font-size:15px}
-.f textarea{min-height:90px;resize:vertical}
+.arow .sub{font-size:13px;color:var(--ink-3);white-space:nowrap}
+.arow .chev{color:var(--ink-3)}
+.vis{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:8px 12px;min-height:40px;background:#fff;font-weight:700;font-size:13px;white-space:nowrap}
+.vis.on{color:var(--brand);border-color:#cdd5bd;background:var(--brand-soft)}
+.vis.off{color:var(--ink-3)}
+.pill{font-size:12px;font-weight:700;border-radius:999px;padding:2px 8px;margin-left:6px;white-space:nowrap}
+.pill.draft{background:#fff1c2;color:#6d5000}
+.pill.sync{background:var(--fos-bg);color:var(--fos)}
+.pill.done{background:var(--ok-bg);color:var(--ok)}
+.edit{padding:20px}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.f label{display:block;font-weight:700;font-size:15px;margin-bottom:8px}
+.f input,.f select,.f textarea{width:100%;padding:13px;border:1px solid var(--line);border-radius:var(--r-sm);background:#fff;font-size:16px}
+.f textarea{min-height:96px;resize:vertical}
 .f.full{grid-column:1/-1}
-.drop{display:block;border:2.5px dashed #cfd4da;border-radius:16px;padding:22px;text-align:center;background:#fafbfc;cursor:pointer}
-.drop.over{border-color:var(--brand);background:#fff4ee}
-.drop b{font-size:17px}
+.f .two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.drop{display:flex!important;flex-direction:column;align-items:center;gap:6px;border:2px dashed #d5d8cd;border-radius:var(--r);padding:24px;text-align:center;background:var(--soft);cursor:pointer;color:var(--ink-2);font-weight:500!important}
+.drop.over{border-color:var(--brand);background:var(--brand-soft)}
+.drop b{font-size:17px;color:var(--ink)}
 .ph{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;margin-top:10px}
-.ph .it{position:relative;border-radius:12px;overflow:hidden;background:#eee;aspect-ratio:1}
+.ph .it{position:relative;border-radius:12px;overflow:hidden;background:var(--soft);aspect-ratio:1}
 .ph img{width:100%;height:100%;object-fit:cover;display:block}
-.ph .x{position:absolute;right:6px;top:6px;border:0;border-radius:999px;background:rgba(0,0,0,.6);color:#fff;width:26px;height:26px}
-.ph .mk{position:absolute;left:6px;bottom:24px;border:0;border-radius:6px;background:rgba(255,255,255,.9);font-size:11px;font-weight:700;padding:2px 6px}
-.ph .cover{position:absolute;left:6px;top:6px;background:var(--brand);color:#fff;font-size:11px;font-weight:700;border-radius:6px;padding:1px 6px}
-.ph .sz{position:absolute;left:0;right:0;bottom:0;background:rgba(0,0,0,.55);color:#fff;font-size:10.5px;padding:3px 6px}
+.ph .x{position:absolute;right:6px;top:6px;border:0;border-radius:999px;background:rgba(0,0,0,.6);color:#fff;width:32px;height:32px}
+.ph .cover{position:absolute;left:6px;top:6px;background:var(--brand);color:#fff;font-size:12px;font-weight:700;border-radius:6px;padding:2px 7px}
+.ph .mk{position:absolute;left:6px;bottom:26px;border:0;border-radius:8px;background:rgba(255,255,255,.95);font-size:12px;font-weight:700;padding:5px 8px}
+.ph .sz{position:absolute;left:0;right:0;bottom:0;background:rgba(0,0,0,.55);color:#fff;font-size:11px;padding:3px 6px}
 .toggle{display:flex;gap:8px;flex-wrap:wrap}
-.toggle button{border:2px solid #d9dce1;background:#fff;border-radius:12px;padding:12px 16px;font-weight:700;font-size:15px}
-.toggle button.on{border-color:var(--brand);background:#fff4ee;color:var(--brand-2)}
-.savebar{position:sticky;bottom:calc(60px + env(safe-area-inset-bottom));display:flex;gap:8px;justify-content:flex-end;background:linear-gradient(transparent,#fff 30%);padding:16px 0 4px;margin-top:10px}
-.toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));transform:translateX(-50%);background:#111;color:#fff;padding:10px 16px;border-radius:10px;font-size:14px;z-index:70;max-width:90vw}
+.toggle button{border:2px solid var(--line);background:#fff;border-radius:var(--r-sm);padding:12px 16px;font-weight:700;font-size:15px;min-height:48px}
+.toggle button.on{border-color:var(--brand);background:var(--brand-soft);color:var(--brand)}
+.savebar{position:sticky;bottom:calc(60px + env(safe-area-inset-bottom));display:flex;gap:8px;justify-content:flex-end;background:linear-gradient(transparent,#fff 30%);padding:16px 0 4px;margin-top:12px}
+.savebar .btn{white-space:nowrap}
 
 /* 구조 설명 */
-.arch{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:10px 0 20px}
-.arch div{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;position:relative}
+.arch{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:12px 0 24px}
+.arch div{padding:16px}
 .arch b{display:block;margin-bottom:4px}
 .arch small{color:var(--ink-2)}
 .doc ul{margin:0;padding-left:18px}
-.doc li{margin:6px 0}
+.doc li{margin:8px 0}
 
-@media (max-width:860px){
-  header.site .in{flex-wrap:wrap;height:auto;padding-top:10px;padding-bottom:6px;gap:8px}
-  .logo{flex:1}
-  .menu{order:3;flex-basis:100%;display:grid;grid-template-columns:repeat(3,1fr);gap:4px;overflow:visible;white-space:normal}
-  .menu button{min-height:44px;border-radius:10px;background:#fff;border:1px solid var(--line);font-size:13px}
-  .menu button.on{box-shadow:none;border-color:var(--brand);color:var(--brand-2)}
-  .cards{grid-template-columns:1fr 1fr;gap:10px}
-  #newsCards{grid-template-columns:1fr}
-  .acard .bd{padding:10px}
-  .acard .nm{font-size:15px}
-  .hero,.detail,.fgrid{grid-template-columns:1fr}
-  .filters{grid-template-columns:1fr 1fr}
-  .filters input{grid-column:1/-1}
-  .arch{grid-template-columns:1fr 1fr}
-  .demobar .msg{display:none}
+/* PC 전용 */
+@media (min-width:861px){
+  .greet{display:none}
+  .banner{min-height:340px;padding:40px}
+  .quick button{flex-direction:row;justify-content:flex-start;text-align:left;padding:18px 20px;gap:14px}
+  .quick button span{display:flex;flex-direction:column}
+  .quick button small{display:block}
 }
-
-/* ===== 리디자인: 차분한 미색 + 올리브 포인트, 둥근 카드, 칩 필터, 휴대폰 아래 탭 ===== */
-:root{--bg:#f3f2ec;--card:#fff;--ink:#1c1f17;--ink-2:#5b5f55;--ink-3:#8f9388;--line:#e8e6de;--brand:#3d4b2a;--brand-2:#2c3820;--lime:#d6e35a;--green:#3d6b2a;--green-bg:#e9f0dc}
-body{background:var(--bg)}
-header.site{background:rgba(243,242,236,.92)}
-.logo i{background:var(--brand)}
-.btn{background:var(--brand);border-radius:999px}
-.btn:hover{background:var(--brand-2)}
-.btn.lime{background:var(--lime);color:#1c1f17}
-.btn.lime:hover{background:#c8d64a}
-.btn.ghost{border-radius:999px}
-.menu button.on{box-shadow:inset 0 -2px 0 var(--brand)}
-.news,.acard,.box,.arow,.edit{border-radius:20px;border-color:var(--line);box-shadow:0 1px 2px rgba(28,31,23,.04)}
-.acard .im{border-radius:16px;margin:8px 8px 0;overflow:hidden}
-.acard .im .badge{left:8px;top:8px;background:rgba(255,255,255,.92);color:var(--ink);font-size:11px}
-.acard .im .badge::before{content:"";width:6px;height:6px;border-radius:50%;margin-right:5px;background:var(--dot,#3d6b2a)}
-.acard .im .badge.b-rev{--dot:#c48a00}.acard .im .badge.b-done{--dot:#8f9388}.acard .im .badge.b-foster{--dot:#2b6cb0}
-.news .im{margin:8px 8px 0;border-radius:14px;overflow:hidden}
-.home-top{display:grid;gap:14px;padding-top:18px}
-.greet{display:flex;align-items:center;gap:12px}
-.greet .av{width:42px;height:42px;border-radius:50%;background:var(--lime);color:var(--brand);color:#fff;display:grid;place-items:center;font-size:20px;flex:none}
-.greet b{display:block;font-size:16px}
-.greet span{font-size:13px;color:var(--ink-3)}
-.search{display:flex;gap:8px}
-.search input{flex:1;min-width:0;border:1px solid var(--line);background:#fff;border-radius:14px;padding:13px 14px;font-size:15px}
-.search button{width:48px;border:0;border-radius:14px;background:var(--brand);color:#fff;display:grid;place-items:center}
-.banner{position:relative;border-radius:22px;overflow:hidden;color:#fff;padding:26px 24px;min-height:220px;display:flex;flex-direction:column;justify-content:flex-end;background:#2b2f25}
-.banner img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55}
-.banner::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(20,24,16,.85),rgba(20,24,16,.2))}
-.banner>*{position:relative;z-index:1;max-width:520px}
-.banner h1{color:#fff;font-size:clamp(24px,3.6vw,36px)}
-.banner p{color:#e7e9e0;margin:0 0 14px}
-.quick{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.quick button{border:1px solid var(--line);background:#fff;border-radius:18px;padding:14px 8px;font-weight:700;font-size:13.5px;display:flex;flex-direction:column;align-items:center;gap:6px}
-.quick button i{font-style:normal;width:40px;height:40px;border-radius:12px;background:var(--bg);display:grid;place-items:center;color:var(--brand)}
-.stats{margin:2px 0 0}
-.stats b{color:var(--brand)}
-.sec-h{display:flex;align-items:baseline;justify-content:space-between;margin:26px 0 12px}
-.sec-h h2{margin:0}
-.sec-h button{border:0;background:none;font-weight:700;font-size:13px;color:var(--ink-2)}
-.chips{display:flex;gap:8px;overflow-x:auto;padding:2px 0 4px;margin-bottom:10px;scrollbar-width:none}
-.chips button{flex:none;border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 14px;font-size:13.5px;font-weight:600;min-height:38px}
-.chips button.on{background:var(--brand);color:#fff;border-color:var(--brand)}
-.more-f{border:0;background:none;font-weight:700;font-size:13px;color:var(--ink-2);padding:4px 0;margin-bottom:8px}
-.filters{grid-template-columns:2fr 1fr 1fr 1fr}
-.filters select,.filters input{border-radius:12px}
-.filters .hidden-sel{display:none}
-.tabbar{display:none}
-.float button.p{background:var(--brand)}
+/* 휴대폰 */
 @media (max-width:860px){
   .demobar{position:relative;padding-bottom:8px}
-  body{padding-bottom:calc(74px + env(safe-area-inset-bottom))}
-  .menu{display:none!important}
-  .float{display:none}
-  .tabbar{display:grid;grid-template-columns:repeat(4,1fr);position:fixed;left:0;right:0;bottom:0;z-index:55;background:#fff;border-top:1px solid var(--line);padding:6px 0 calc(6px + env(safe-area-inset-bottom))}
-  .tabbar button{border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11.5px;font-weight:600;color:var(--ink-3);padding:4px 0;min-height:48px}
-  .tabbar button i{font-style:normal;line-height:0;color:var(--ink-3)}
-  .tabbar button.on{color:var(--brand)}
-  .tabbar button.on i{color:var(--brand)}
-  .tabbar button.on{font-weight:800}
-  .filters{grid-template-columns:1fr 1fr}
-  .banner{min-height:200px;padding:22px 18px}
-  .toast{bottom:calc(90px + env(safe-area-inset-bottom))}
-  .savebar{bottom:calc(70px + env(safe-area-inset-bottom))}
-}
-
-/* 레퍼런스③: 떠 있는 알약 탭, 카드 ♡, 아이콘 정보 줄 */
-.acard{cursor:pointer}
-.acard:focus-visible{outline:3px solid var(--lime);outline-offset:2px}
-.fav{position:absolute;right:8px;top:8px;width:34px;height:34px;border-radius:50%;border:0;background:rgba(255,255,255,.92);display:grid;place-items:center;color:var(--ink-2);fill:none}
-.fav.on{color:#e0533c;fill:#e0533c}
-.fav.on svg{fill:#e0533c}
-.acard .nm .kind{font-size:12px;font-weight:600;color:var(--ink-3)}
-.acard .meta{display:flex;flex-wrap:wrap;gap:4px 8px;margin-top:4px;font-size:12.5px;line-height:1.3}
-.acard .meta span{display:inline-flex;align-items:center;gap:4px;white-space:nowrap}
-.acard .meta svg{color:var(--ink-3)}
-@media (max-width:860px){
-  .tabbar{left:14px;right:14px;bottom:calc(12px + env(safe-area-inset-bottom));border-radius:999px;background:#fff;border:1px solid var(--line);padding:6px;box-shadow:0 8px 24px rgba(28,31,23,.12)}
-  .tabbar button{color:var(--ink-3);border-radius:999px;min-height:52px;font-size:11px}
-  .tabbar button i{color:inherit}
-  .tabbar button.on{background:#eef1e3;color:var(--brand)}
-  .tabbar button.on i{color:var(--brand)}
-  body{padding-bottom:calc(96px + env(safe-area-inset-bottom))}
+  body{padding-bottom:calc(100px + env(safe-area-inset-bottom))}
+  .menu,.float{display:none}
+  header.site .in{height:58px}
+  .logo span{font-size:16px}
+  .tabbar{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:55;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px;box-shadow:0 8px 24px rgba(28,31,23,.12)}
+  .tabbar button{border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;font-weight:600;color:var(--ink-3);border-radius:999px;min-height:52px;padding:4px 0}
+  .tabbar button.on{background:var(--brand-soft);color:var(--brand);font-weight:800}
+  .cards{grid-template-columns:1fr 1fr;gap:10px}
+  .acard .bd{padding:10px 12px 12px}
+  .acard .nm{font-size:16px}
+  .acard .meta .w{display:none}
+  .news-row{grid-auto-flow:column;grid-template-columns:none;grid-auto-columns:80%;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px}
+  .news{scroll-snap-align:start}
+  .steps{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:46%;overflow-x:auto}
+  .more-box{grid-template-columns:1fr 1fr}
+  .more-box input{grid-column:1/-1}
+  .detail{grid-template-columns:1fr;gap:16px}
+  .info{position:static}
+  .video-slot.ph-only{display:none}
+  .apply-row{position:sticky;bottom:calc(88px + env(safe-area-inset-bottom));z-index:20;background:#fff;padding:8px;border-radius:999px;box-shadow:0 8px 24px rgba(28,31,23,.16);margin:12px 0}
+  .grid2,.grid3,.fgrid,.form .two{grid-template-columns:1fr}
+  .arch{grid-template-columns:1fr 1fr}
+  footer.site .in{grid-template-columns:1fr}
+  .admin-top h2{font-size:17px}
+  .arow{grid-template-columns:56px 1fr auto}
+  .arow .chev{display:none}
+  .arow img{width:56px;height:56px}
+  .savebar{position:fixed;left:0;right:0;bottom:0;z-index:70;margin:0;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--line)}
+  .savebar .btn{flex:1;padding:12px 8px;font-size:14px}
+  .admin .wrap{padding-bottom:100px}
   .toast{bottom:calc(100px + env(safe-area-inset-bottom))}
-  .savebar{bottom:calc(84px + env(safe-area-inset-bottom))}
+  .demobar .msg{display:none}
 }
 </style>
 </head>
 <body>
 
 <div class="demobar">
-  <b>제안용 데모</b><span class="msg">단체명·동물·사진은 예시예요.</span><span class="sp"></span>
+  <b>제안용 데모</b><span class="msg">단체명·동물·숫자·사진은 예시예요. 관리자에서 동물을 숨김으로 바꾼 뒤 그 주소로 들어가 보세요.</span><span class="sp"></span>
   <button data-go="home" class="on">홈페이지</button>
   <button data-go="admin">쉬운 관리자</button>
   <button data-go="arch">안 다운되는 구조</button>
 </div>
 
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 9.5V20a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V9.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+    <symbol id="i-paw" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="6" cy="10" r="1.8"/><circle cx="10" cy="6" r="1.8"/><circle cx="14" cy="6" r="1.8"/><circle cx="18" cy="10" r="1.8"/><path d="M12 12c-3 0-5.5 3.2-5.5 5.4 0 1.6 1.3 2.6 2.9 2.6 1 0 1.7-.5 2.6-.5s1.6.5 2.6.5c1.6 0 2.9-1 2.9-2.6C17.5 15.2 15 12 12 12z"/></g></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+    <symbol id="i-hand" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 11V6.5a1.5 1.5 0 0 1 3 0V11"/><path d="M10 10V5a1.5 1.5 0 0 1 3 0v5"/><path d="M13 10V6a1.5 1.5 0 0 1 3 0v6"/><path d="M16 11.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6h-1a6 6 0 0 1-5-2.7L4.6 14.6a1.5 1.5 0 0 1 2.4-1.8L7 13"/></g></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></g></symbol>
+    <symbol id="i-male" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="10" cy="14" r="5"/><path d="M14 10l6-6M15 4h5v5"/></g></symbol>
+    <symbol id="i-female" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="9" r="5"/><path d="M12 14v7M9 18h6"/></g></symbol>
+    <symbol id="i-cake" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 21h16v-8H4z"/><path d="M4 16c2 1.5 4 1.5 6 0s4-1.5 6 0 4 1.5 4 0"/><path d="M12 13V9"/></g></symbol>
+    <symbol id="i-kg" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M8.5 10a3.5 3.5 0 0 1 7 0"/><path d="M12 10l1.5-2"/></g></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+    <symbol id="i-camera" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></g></symbol>
+    <symbol id="i-chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></g></symbol>
+    <symbol id="i-eyeoff" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 3l18 18"/><path d="M10.6 6.1A10.8 10.8 0 0 1 12 6c6.5 0 10 6 10 6a17 17 0 0 1-3 3.6M6.1 7.5A16.6 16.6 0 0 0 2 12s3.5 6 10 6a9.7 9.7 0 0 0 4.2-.9"/></g></symbol>
+    <symbol id="i-share" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M8 7l4-4 4 4"/><path d="M5 12v7a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-7"/></g></symbol>
+    <symbol id="i-car" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M3 15l2-6h14l2 6v4H3z"/><circle cx="7.5" cy="17.5" r="1.5"/><circle cx="16.5" cy="17.5" r="1.5"/></g></symbol>
+  </defs>
+</svg>
+
 <div id="site">
   <header class="site"><div class="in">
-    <div class="logo" data-page="home"><i>♥</i><span data-i18n="org">○○동물구조 (예시)</span></div>
-    <nav class="menu" aria-label="메뉴">
+    <button class="logo" data-page="home" type="button"><i><svg width="18" height="18"><use href="#i-heart" fill="#fff"/></svg></i><span data-i18n="org">○○동물구조 (예시)</span></button>
+    <nav class="menu" aria-label="주 메뉴">
       <button data-page="about" data-i18n="m1">소개</button>
       <button data-page="activity" data-i18n="m2">활동</button>
       <button data-page="adopt" data-i18n="m3">입양&amp;임시보호</button>
@@ -260,105 +366,246 @@ header.site{background:rgba(243,242,236,.92)}
       <button data-page="donate" data-i18n="m5">후원</button>
       <button data-page="contact" data-i18n="m6">소식·문의</button>
     </nav>
-    <button class="lang" id="lang" type="button">EN</button>
+    <button class="lang" id="lang" type="button" aria-label="영문 전환">EN</button>
   </div></header>
 
-  <!-- 메인 -->
+  <!-- 홈 -->
   <section class="page" id="p-home">
     <div class="wrap home-top">
-      <div class="greet"><span class="av"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="10" r="1.8"/><circle cx="10" cy="6" r="1.8"/><circle cx="14" cy="6" r="1.8"/><circle cx="18" cy="10" r="1.8"/><path d="M12 12c-3 0-5.5 3.2-5.5 5.4 0 1.6 1.3 2.6 2.9 2.6 1 0 1.7-.5 2.6-.5s1.6.5 2.6.5c1.6 0 2.9-1 2.9-2.6C17.5 15.2 15 12 12 12z"/></svg></span><div><b>안녕하세요</b><span>오늘도 함께해 주셔서 고마워요</span></div></div>
-      <form class="search" id="homeSearch" role="search"><input id="homeQ" type="search" placeholder="이름으로 친구 찾기 (예: 보리)" aria-label="이름으로 찾기"><button type="submit" aria-label="찾기"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></button></form>
-      <div class="banner"><img src="https://placedog.net/1200/700?id=21" alt="" loading="eager"><h1 data-i18n="heroT">구조부터 입양까지,<br>끝까지 책임집니다</h1><p data-i18n="heroS">위기에 놓인 동물을 구조하고, 치료하고, 평생 가족을 찾아 줍니다.</p><div><button class="btn lime" data-page="donate" type="button" data-i18n="cta1">정기후원 하기</button></div></div>
-      <div class="quick"><button type="button" data-page="adopt"><i><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="10" r="1.8"/><circle cx="10" cy="6" r="1.8"/><circle cx="14" cy="6" r="1.8"/><circle cx="18" cy="10" r="1.8"/><path d="M12 12c-3 0-5.5 3.2-5.5 5.4 0 1.6 1.3 2.6 2.9 2.6 1 0 1.7-.5 2.6-.5s1.6.5 2.6.5c1.6 0 2.9-1 2.9-2.6C17.5 15.2 15 12 12 12z"/></svg></i><span data-i18n="cta2">입양하기</span></button><button type="button" data-page="donate"><i><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg></i><span>후원하기</span></button><button type="button" data-page="volunteer"><i><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 11V6.5a1.5 1.5 0 0 1 3 0V11"/><path d="M10 10V5a1.5 1.5 0 0 1 3 0v5"/><path d="M13 10V6a1.5 1.5 0 0 1 3 0v6"/><path d="M16 11.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6h-1a6 6 0 0 1-5-2.7L4.6 14.6a1.5 1.5 0 0 1 2.4-1.8L7 13"/></svg></i><span>봉사 신청</span></button></div>
-      <div class="stats"><div><b>1,284</b><span class="small" data-i18n="s1">구조한 동물</span></div><div><b>963</b><span class="small" data-i18n="s2">입양 간 가족</span></div><div><b>412</b><span class="small" data-i18n="s3">정기 후원자</span></div></div>
+      <div class="greet"><span class="av"><svg width="22" height="22"><use href="#i-paw"/></svg></span><div><b data-i18n="hi">반가워요</b><span data-i18n="hiS">오늘도 함께해 주셔서 고마워요</span></div></div>
+      <form class="search" id="homeSearch" role="search"><input id="homeQ" type="search" data-i18n-ph="searchPh" placeholder="이름으로 친구 찾기 (예: 보리)" aria-label="이름으로 찾기"><button type="submit" aria-label="찾기"><svg width="20" height="20"><use href="#i-search"/></svg></button></form>
+      <div class="banner"><img src="https://placedog.net/1400/800?id=21" alt=""><h1 data-i18n="heroT">구조부터 입양까지,<br>끝까지 책임집니다</h1><p data-i18n="heroS">위기에 놓인 동물을 구조하고, 치료하고, 평생 가족을 찾아 줍니다.</p><div><button class="btn lime" data-page="donate" type="button" data-i18n="cta1">정기후원 하기</button></div></div>
+      <div class="quick">
+        <button type="button" data-page="adopt"><i><svg width="22" height="22"><use href="#i-paw"/></svg></i><span><b data-i18n="q1">입양하기</b><small id="qWait"></small></span></button>
+        <button type="button" data-page="donate"><i><svg width="22" height="22"><use href="#i-heart" fill="none"/></svg></i><span><b data-i18n="q2">후원하기</b><small data-i18n="q2s">정기·일시·물품 후원</small></span></button>
+        <button type="button" data-page="volunteer"><i><svg width="22" height="22"><use href="#i-hand"/></svg></i><span><b data-i18n="q3">봉사 신청</b><small data-i18n="q3s">센터·이동봉사</small></span></button>
+      </div>
+      <div class="stats"><div><b>1,284</b><span data-i18n="s1">구조한 동물</span></div><div><b>963</b><span data-i18n="s2">입양 간 가족</span></div><div><b>412</b><span data-i18n="s3">정기 후원자</span></div></div>
+      <div class="ex" style="margin-top:-8px">숫자는 예시예요</div>
     </div>
     <div class="wrap" style="padding-top:0">
-      <div class="sec-h"><h2 data-i18n="newsT">최신 구조 소식</h2><button type="button" data-page="activity">모두 보기 ›</button></div>
-      <div class="cards" id="newsCards"></div>
-      <div class="sec-h"><h2 data-i18n="waitT">가족을 기다리고 있어요</h2><button type="button" data-page="adopt">모두 보기 ›</button></div>
+      <div class="sec-h" style="margin-top:16px"><h2 data-i18n="waitT">가족을 기다리고 있어요</h2><button class="link-btn" type="button" data-page="adopt" data-i18n="all">모두 보기 ›</button></div>
       <div class="cards" id="homeAnimals"></div>
+      <div class="sec-h"><h2 data-i18n="newsT">최신 구조 소식</h2><button class="link-btn" type="button" data-page="activity" data-i18n="all">모두 보기 ›</button></div>
+      <div class="news-row" id="newsCards"></div>
     </div>
   </section>
 
+  <!-- 소개 -->
+  <section class="page wrap page-head" id="p-about" hidden>
+    <h1 data-i18n="m1">소개</h1>
+    <p class="muted" style="max-width:640px">○○동물구조(예시)는 학대·유기·재난 현장의 동물을 구조해 치료하고, 평생 가족을 찾을 때까지 책임지는 비영리 단체예요. 대부분의 활동은 봉사와 후원으로 운영돼요.</p>
+    <div class="grid3" style="margin:20px 0">
+      <div class="card tile"><i><svg width="22" height="22"><use href="#i-shield"/></svg></i><h3>구조</h3><p class="muted" style="margin:0">위급한 동물을 현장에서 구조하고 응급 치료해요.</p></div>
+      <div class="card tile"><i><svg width="22" height="22"><use href="#i-heart" fill="none"/></svg></i><h3>치료·보호</h3><p class="muted" style="margin:0">협력 병원과 센터, 임시보호 가정에서 회복을 도와요.</p></div>
+      <div class="card tile"><i><svg width="22" height="22"><use href="#i-home"/></svg></i><h3>입양·사후 관리</h3><p class="muted" style="margin:0">꼼꼼한 상담으로 가족을 찾고 입양 후에도 함께해요.</p></div>
+    </div>
+    <h2 style="margin:28px 0 12px">걸어온 길 <span class="ex">(예시)</span></h2>
+    <ul class="history">
+      <li><b>2019</b><span>봉사자 모임으로 첫 구조 활동 시작</span></li>
+      <li><b>2021</b><span>비영리 단체 등록, 구조 센터 마련</span></li>
+      <li><b>2024</b><span>누적 구조 1,000마리</span></li>
+      <li><b>2026</b><span>새 홈페이지와 쉬운 관리자 도입</span></li>
+    </ul>
+  </section>
+
+  <!-- 활동 (구조 소식) -->
+  <section class="page wrap page-head" id="p-activity" hidden>
+    <h1 data-i18n="m2">활동</h1>
+    <p class="muted">구조 현장과 회복 소식을 전해요.</p>
+    <div class="news-row" id="activityNews" style="grid-auto-flow:row;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));grid-auto-columns:auto;overflow:visible"></div>
+  </section>
+
   <!-- 입양 목록 -->
-  <section class="page wrap" id="p-adopt" hidden>
+  <section class="page wrap page-head" id="p-adopt" hidden>
     <h1 data-i18n="m3">입양&amp;임시보호</h1>
-    <p class="muted">이름이나 조건으로 찾아보세요. 사진은 화면에 보일 때 불러와서 빨라요.</p>
-    <div class="chips" data-sel="fKind"><button type="button" data-v="" class="on">전체</button><button type="button" data-v="개">강아지</button><button type="button" data-v="고양이">고양이</button></div>
-    <div class="chips" data-sel="fStatus"><button type="button" data-v="" class="on">모든 상태</button><button type="button" data-v="입양 가능">입양 가능</button><button type="button" data-v="임시보호 중">임시보호 중</button><button type="button" data-v="입양 심사 중">심사 중</button><button type="button" data-v="입양 완료">입양 완료</button></div>
-    <button class="more-f" id="moreF" type="button" aria-expanded="false">상세 조건 (이름·성별·나이·체중) ▾</button>
-    <div class="filters" id="moreBox" hidden>
-      <input id="q" type="search" placeholder="이름으로 찾기">
-      <select id="fKind" class="hidden-sel"><option value="">동물 전체</option><option>개</option><option>고양이</option></select>
+    <h2 style="font-size:16px;margin:4px 0 8px"><span data-i18n="procT">입양은 이렇게 진행돼요</span> <span class="ex">(단체 절차에 맞춰 바꿔요)</span></h2>
+    <div class="steps">
+      <div><b data-i18n="st1">신청서 작성</b><span class="small" data-i18n="st1s">마음에 드는 친구 페이지에서</span></div>
+      <div><b data-i18n="st2">전화 상담</b><span class="small" data-i18n="st2s">생활 환경을 여쭤봐요</span></div>
+      <div><b data-i18n="st3">만남</b><span class="small" data-i18n="st3s">센터나 임시보호 가정에서</span></div>
+      <div><b data-i18n="st4">입양 계약</b><span class="small" data-i18n="st4s">책임비와 서약서</span></div>
+      <div><b data-i18n="st5">사후 관리</b><span class="small" data-i18n="st5s">한 달·석 달 안부 확인</span></div>
+    </div>
+    <div class="chips" id="chipKind"></div>
+    <div class="chips" id="chipStatus"></div>
+    <button class="link-btn" id="moreF" type="button" aria-expanded="false" style="padding-left:0"></button>
+    <div class="more-box" id="moreBox" hidden>
+      <input id="q" type="search" data-i18n-ph="namePh" placeholder="이름으로 찾기">
       <select id="fSex"><option value="">성별 전체</option><option>수컷</option><option>암컷</option></select>
-      <select id="fAge"><option value="">연령 전체</option><option value="0-12">1살 미만</option><option value="12-84">1~7살</option><option value="84-999">7살 이상</option></select>
+      <select id="fAge"><option value="">나이 전체</option><option value="0-12">1살 미만</option><option value="12-84">1~7살</option><option value="84-999">7살 이상</option></select>
       <select id="fWeight"><option value="">체중 전체</option><option value="0-5">5kg 미만</option><option value="5-15">5~15kg</option><option value="15-99">15kg 이상</option></select>
-      <select id="fStatus" class="hidden-sel"><option value="">입양 상태 전체</option><option>입양 가능</option><option>임시보호 중</option><option>입양 심사 중</option><option>입양 완료</option></select>
     </div>
     <div class="cards" id="list"></div>
   </section>
 
   <!-- 상세 -->
-  <section class="page wrap" id="p-detail" hidden></section>
+  <section class="page wrap page-head" id="p-detail" hidden></section>
 
-  <!-- 그 밖의 메뉴 (시안 범위 밖) -->
-  <section class="page wrap" id="p-other" hidden>
-    <h1 id="otherT"></h1>
-    <div class="empty">이 메뉴는 공고의 화면설계서에 맞춰 만들어요. 데모에서는 '입양&amp;임시보호'와 '쉬운 관리자'를 먼저 보여 드려요.</div>
+  <!-- 봉사 -->
+  <section class="page wrap page-head" id="p-volunteer" hidden>
+    <h1 data-i18n="m4">봉사</h1>
+    <p class="muted">작은 시간도 큰 힘이 돼요. 원하는 봉사를 골라 신청해 주세요.</p>
+    <div class="grid2" style="margin:16px 0 24px">
+      <div class="card tile"><i><svg width="22" height="22"><use href="#i-home"/></svg></i><h3>센터 봉사</h3><p class="muted" style="margin:0 0 6px">청소, 산책, 밥 주기, 목욕을 함께해요.</p><p class="small" style="margin:0">주말 오전 10시~오후 2시 · 만 16세 이상 (예시)</p></div>
+      <div class="card tile"><i><svg width="22" height="22"><use href="#i-car"/></svg></i><h3>이동봉사</h3><p class="muted" style="margin:0 0 6px">입양 가는 친구를 새 가족에게 데려다줘요.</p><p class="small" style="margin:0">자차 필요 · 일정 협의 (예시)</p></div>
+    </div>
+    <form class="card form" id="volForm" style="padding:20px;max-width:640px" novalidate>
+      <h2>봉사 신청</h2>
+      <div class="two"><div><label for="vName">이름</label><input id="vName" required maxlength="20"></div><div><label for="vPhone">연락처</label><input id="vPhone" required inputmode="tel" maxlength="13" placeholder="010-0000-0000"></div></div>
+      <div class="two"><div><label for="vType">희망 봉사</label><select id="vType"><option>센터 봉사</option><option>이동봉사</option></select></div><div><label for="vDay">가능한 요일</label><select id="vDay"><option>토요일</option><option>일요일</option><option>평일</option></select></div></div>
+      <label class="agree"><input type="checkbox" required> 신청 확인을 위해 이름·연락처를 수집하는 데 동의해요 (필수)</label>
+      <button class="btn" type="submit">봉사 신청하기</button>
+    </form>
   </section>
 
-  <nav class="tabbar" aria-label="아래 메뉴"><button type="button" data-page="home"><i><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V9.5"/></svg></i>홈</button><button type="button" data-page="adopt"><i><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="10" r="1.8"/><circle cx="10" cy="6" r="1.8"/><circle cx="14" cy="6" r="1.8"/><circle cx="18" cy="10" r="1.8"/><path d="M12 12c-3 0-5.5 3.2-5.5 5.4 0 1.6 1.3 2.6 2.9 2.6 1 0 1.7-.5 2.6-.5s1.6.5 2.6.5c1.6 0 2.9-1 2.9-2.6C17.5 15.2 15 12 12 12z"/></svg></i>입양</button><button type="button" data-page="donate"><i><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg></i>후원</button><button type="button" data-page="contact"><i><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg></i>문의</button></nav>
-  <div class="float"><button class="p" data-page="adopt" type="button">입양</button><button data-page="donate" type="button">후원</button><button data-page="contact" type="button">문의</button></div>
+  <!-- 후원 -->
+  <section class="page wrap page-head" id="p-donate" hidden>
+    <h1 data-i18n="m5">후원</h1>
+    <p class="muted">후원금은 구조, 치료, 보호에 쓰여요. 실제 결제는 단체가 쓰시는 결제 서비스 페이지에서 진행돼요.</p>
+    <div class="tabs" id="donateTabs" role="tablist"><button class="on" data-t="reg" type="button">정기후원</button><button data-t="once" type="button">일시후원</button><button data-t="goods" type="button">물품후원</button></div>
+    <div class="card" style="padding:20px;max-width:640px" id="donateMoney">
+      <h2 id="dTitle">매달 함께해 주세요</h2>
+      <p class="small" id="dDesc" style="margin:6px 0 0">매달 3만 원이면 구조견 한 마리의 한 달 사료와 기본 진료비가 돼요. (예시)</p>
+      <div class="amounts" id="amounts"><button type="button">10,000원</button><button type="button" class="on">30,000원</button><button type="button">50,000원</button><button type="button">직접 입력</button></div>
+      <a class="btn block" href="#" rel="noopener">결제 페이지로 이동 ↗</a>
+      <p class="small" style="margin:10px 0 0">연말정산용 기부금 영수증은 결제 페이지에서 신청할 수 있어요.</p>
+    </div>
+    <div class="card" style="padding:20px;max-width:640px" id="donateGoods" hidden>
+      <h2>지금 필요한 물품 <span class="ex">(예시)</span></h2>
+      <div class="list-row"><b>강아지 사료 (성견용)</b><span>매달 20포대</span></div>
+      <div class="list-row"><b>고양이 모래</b><span>매달 30포대</span></div>
+      <div class="list-row"><b>배변 패드</b><span>매달 50팩</span></div>
+      <p class="small">보내실 곳: 경기도 ○○시 ○○로 00 ○○동물구조 센터 (예시 주소)</p>
+    </div>
+    <div class="card" style="padding:20px;max-width:640px;margin-top:16px">
+      <h3>후원금은 이렇게 쓰였어요</h3>
+      <p class="small" style="margin:0 0 8px">매년 사용 내역 보고서를 공개해요. (예시)</p>
+      <a class="btn ghost sm" href="#" rel="noopener">2025년 사용 내역 보고서 보기</a>
+    </div>
+  </section>
+
+  <!-- 소식·문의 -->
+  <section class="page wrap page-head" id="p-contact" hidden>
+    <h1 data-i18n="m6">소식·문의</h1>
+    <div class="grid2" style="align-items:start">
+      <div>
+        <h2 style="margin-bottom:6px">공지사항</h2>
+        <div class="list-row"><b>11월 정기 입양 행사 안내</b><span id="n1"></span></div>
+        <div class="list-row"><b>겨울철 보호소 물품 후원 요청</b><span id="n2"></span></div>
+        <div class="list-row"><b>새 홈페이지를 열었어요</b><span id="n3"></span></div>
+        <h2 style="margin:28px 0 6px">자주 묻는 질문 <span class="ex">(답변은 예시)</span></h2>
+        <div class="faq">
+          <details><summary>입양 비용이 있나요?</summary><p>중성화·접종 비용 일부를 책임비로 받아요. 금액은 동물마다 달라요.</p></details>
+          <details><summary>지방에서도 입양할 수 있나요?</summary><p>네. 상담 후 이동봉사로 데려다드릴 수 있어요.</p></details>
+          <details><summary>임시보호는 얼마나 하나요?</summary><p>보통 1~3개월이에요. 사료와 병원비는 단체가 지원해요.</p></details>
+          <details><summary>후원 영수증은 어떻게 받나요?</summary><p>결제 페이지에서 신청하면 연말정산용 영수증을 보내 드려요.</p></details>
+          <details><summary>구조 요청은 어디로 하나요?</summary><p>아래 문의 양식에 위치와 사진을 남겨 주세요. 긴급 상황은 지역 보호소에도 함께 알려 주세요.</p></details>
+        </div>
+      </div>
+      <form class="card form" id="contactForm" style="padding:20px" novalidate>
+        <h2>문의하기</h2>
+        <div><label for="cName">이름</label><input id="cName" required maxlength="20"></div>
+        <div><label for="cMail">연락받을 이메일</label><input id="cMail" type="email" required maxlength="80"></div>
+        <div><label for="cType">문의 종류</label><select id="cType"><option>입양</option><option>후원</option><option>봉사</option><option>구조 요청</option><option>기타</option></select></div>
+        <div><label for="cMsg">내용</label><textarea id="cMsg" required maxlength="1000"></textarea></div>
+        <label class="agree"><input type="checkbox" required> 답변을 위해 이름·이메일을 수집하는 데 동의해요 (필수)</label>
+        <button class="btn" type="submit">문의 보내기</button>
+      </form>
+    </div>
+  </section>
+
+  <footer class="site"><div class="in">
+    <div><b>○○동물구조 (예시)</b><br>대표 ○○○ · 고유번호 000-00-00000<br>경기도 ○○시 ○○로 00 · 전화 000-0000-0000<br>이메일 hello@example.org</div>
+    <div><b>함께하기</b><br><a href="#" data-page="donate">후원</a> · <a href="#" data-page="volunteer">봉사</a> · <a href="#" data-page="adopt">입양</a></div>
+    <div><b>안내</b><br><a href="#">개인정보처리방침</a><br><a href="#">후원금 사용 내역</a></div>
+  </div></footer>
+
+  <div class="float"><button class="p" data-page="adopt" type="button" data-i18n="t2">입양</button><button data-page="donate" type="button" data-i18n="t3">후원</button><button data-page="contact" type="button" data-i18n="t4">문의</button></div>
+  <nav class="tabbar" aria-label="아래 메뉴">
+    <button type="button" data-page="home"><svg width="22" height="22"><use href="#i-home"/></svg><span data-i18n="t1">홈</span></button>
+    <button type="button" data-page="adopt"><svg width="22" height="22"><use href="#i-paw"/></svg><span data-i18n="t2">입양</span></button>
+    <button type="button" data-page="donate"><svg width="22" height="22"><use href="#i-heart" fill="none"/></svg><span data-i18n="t3">후원</span></button>
+    <button type="button" data-page="contact"><svg width="22" height="22"><use href="#i-chat"/></svg><span data-i18n="t4">문의</span></button>
+    <button type="button" id="openSheet"><svg width="22" height="22"><use href="#i-menu"/></svg><span data-i18n="t5">전체</span></button>
+  </nav>
 </div>
 
-<!-- 관리자 -->
+<!-- 전체 메뉴 시트 -->
+<div class="sheet-bg" id="sheet" hidden><div class="sheet" role="dialog" aria-label="전체 메뉴">
+  <div class="grid3">
+    <button class="m" type="button" data-page="about"><svg width="22" height="22"><use href="#i-shield"/></svg><span data-i18n="m1">소개</span></button>
+    <button class="m" type="button" data-page="activity"><svg width="22" height="22"><use href="#i-camera"/></svg><span data-i18n="m2">활동</span></button>
+    <button class="m" type="button" data-page="adopt"><svg width="22" height="22"><use href="#i-paw"/></svg><span data-i18n="m3">입양&amp;임시보호</span></button>
+    <button class="m" type="button" data-page="volunteer"><svg width="22" height="22"><use href="#i-hand"/></svg><span data-i18n="m4">봉사</span></button>
+    <button class="m" type="button" data-page="donate"><svg width="22" height="22"><use href="#i-heart" fill="none"/></svg><span data-i18n="m5">후원</span></button>
+    <button class="m" type="button" data-page="contact"><svg width="22" height="22"><use href="#i-chat"/></svg><span data-i18n="m6">소식·문의</span></button>
+  </div>
+</div></div>
+
+<!-- 입양 신청 모달 -->
+<div class="modal-bg" id="applyModal" hidden><form class="modal form" id="applyForm" novalidate>
+  <h2 id="applyTitle">입양 신청</h2>
+  <p class="small" style="margin:0">신청서를 보내면 담당자가 전화로 상담해 드려요. 실제로는 구글 시트로 들어가요.</p>
+  <div class="two"><div><label for="aName">이름</label><input id="aName" required maxlength="20"></div><div><label for="aPhone">연락처</label><input id="aPhone" required inputmode="tel" maxlength="13" placeholder="010-0000-0000"></div></div>
+  <div class="two"><div><label for="aArea">사는 지역</label><input id="aArea" required maxlength="30" placeholder="예) 경기 용인시"></div><div><label for="aFamily">함께 사는 가족</label><input id="aFamily" maxlength="40" placeholder="예) 부부, 초등학생 1명"></div></div>
+  <div><label for="aExp">반려동물을 키워 본 경험</label><select id="aExp"><option>처음이에요</option><option>지금 함께 살아요</option><option>예전에 키웠어요</option></select></div>
+  <div><label for="aWhy">신청하는 이유</label><textarea id="aWhy" required maxlength="800"></textarea></div>
+  <label class="agree"><input type="checkbox" required> 입양 상담을 위해 위 정보를 수집·이용하는 데 동의해요 (필수)</label>
+  <div style="display:flex;gap:8px;justify-content:flex-end"><button class="btn ghost" type="button" id="applyCancel">닫기</button><button class="btn" type="submit">신청서 보내기</button></div>
+</form></div>
+
+<!-- 쉬운 관리자 -->
 <div class="admin" id="admin" hidden>
-  <div class="admin-top"><div class="in"><h2>쉬운 관리자 · 입양 동물</h2><button class="btn sm ghost" id="toSite" type="button">홈페이지 보기</button><button class="btn sm" id="newAnimal" type="button">+ 새 동물 등록</button></div></div>
+  <div class="admin-top"><div class="in"><h2>입양 동물 관리</h2><button class="btn sm ghost" id="toSite" type="button">홈페이지 보기</button><button class="btn sm" id="newAnimal" type="button">+ 새 동물</button></div></div>
   <div class="wrap">
     <div id="adminList">
-      <p class="muted" style="margin-top:0">코드 없이 글쓰기, 사진 여러 장 끌어다 놓기, 공개·숨김을 버튼으로 해요. 이름을 누르면 고쳐요.</p>
+      <p class="muted" style="margin-top:0">사진은 끌어다 놓고, 공개·숨김은 눈 모양 버튼으로 바꿔요. 줄을 누르면 고칠 수 있어요.</p>
+      <input id="aq" type="search" placeholder="이름 찾기" style="width:100%;padding:12px;border:1px solid var(--line);border-radius:12px;margin-bottom:8px">
+      <div class="chips" id="aChips"></div>
       <div class="alist" id="alist"></div>
     </div>
-    <form class="edit" id="editForm" hidden autocomplete="off">
-      <h2 id="editTitle" style="margin-top:0">새 동물 등록</h2>
-      <div class="f full" style="margin-bottom:14px">
+    <form class="card edit" id="editForm" hidden autocomplete="off">
+      <h2 id="editTitle" style="margin-bottom:16px">새 동물 등록</h2>
+      <div class="f full" style="margin-bottom:16px">
         <label>사진 (여러 장 한 번에)</label>
-        <label class="drop" id="drop"><input type="file" id="file" accept="image/*" multiple hidden><b>📷 사진을 여기로 끌어다 놓으세요</b><br><span class="muted">또는 눌러서 고르기 · 휴대폰 사진도 그대로 올리면 자동으로 가볍게 줄여요</span></label>
+        <label class="drop" id="drop"><input type="file" id="file" accept="image/*" multiple hidden><svg width="28" height="28"><use href="#i-camera"/></svg><b>사진을 여기로 끌어다 놓으세요</b><span>또는 눌러서 고르기 · 휴대폰 사진도 그대로 올리면 자동으로 가볍게 줄여요</span></label>
         <div class="ph" id="photos"></div>
       </div>
       <div class="fgrid">
         <div class="f"><label for="eName">이름</label><input id="eName" maxlength="20" placeholder="예) 보리"></div>
-        <div class="f"><label for="eKind">동물</label><select id="eKind"><option>개</option><option>고양이</option></select></div>
-        <div class="f"><label for="eSex">성별</label><select id="eSex"><option>수컷</option><option>암컷</option></select></div>
-        <div class="f"><label for="eAge">나이 (개월)</label><input id="eAge" type="number" min="0" max="300" inputmode="numeric" placeholder="예) 18"></div>
+        <div class="f"><label>동물</label><div class="toggle" id="eKind"><button type="button" data-v="개">강아지</button><button type="button" data-v="고양이">고양이</button></div></div>
+        <div class="f"><label>성별</label><div class="toggle" id="eSex"><button type="button" data-v="수컷">수컷</button><button type="button" data-v="암컷">암컷</button></div></div>
+        <div class="f"><label>나이</label><div class="two"><select id="eYears" aria-label="살"></select><select id="eMonths" aria-label="개월"></select></div></div>
         <div class="f"><label for="eWeight">체중 (kg)</label><input id="eWeight" type="number" min="0" max="99" step="0.1" inputmode="decimal" placeholder="예) 7.5"></div>
         <div class="f"><label for="eHealth">건강 (중성화·접종·특이사항)</label><input id="eHealth" maxlength="80" placeholder="예) 중성화 완료, 종합백신 3차"></div>
+        <div class="f full"><label for="eTraits">성격 (쉼표로 구분)</label><input id="eTraits" maxlength="80" placeholder="예) 사람 좋아함, 산책 좋아함"></div>
         <div class="f full"><label>입양 상태 <span class="small">(바꾸면 변경일이 자동으로 기록돼요)</span></label><div class="toggle" id="eStatus"></div></div>
         <div class="f full"><label for="eStory">구조 배경</label><textarea id="eStory" maxlength="800" placeholder="어디서, 어떻게 구조했는지 적어 주세요"></textarea></div>
         <div class="f full"><label for="eVideo">영상 링크 (선택)</label><input id="eVideo" maxlength="200" placeholder="유튜브 주소를 붙여 넣으면 상세 페이지에 나와요"></div>
         <div class="f full" id="reviewField"><label for="eReview">입양 후기 (입양 완료일 때)</label><textarea id="eReview" maxlength="600"></textarea></div>
-        <div class="f full"><label>공개 여부</label><div class="toggle" id="eVis"><button type="button" data-v="pub">공개</button><button type="button" data-v="hidden">숨김</button></div></div>
+        <div class="f full"><label>홈페이지에</label><div class="toggle" id="eVis"><button type="button" data-v="pub">보이게</button><button type="button" data-v="hidden">숨기기</button></div></div>
       </div>
-      <div class="savebar"><button class="btn ghost" type="button" id="cancelEdit">목록으로</button><button class="btn ghost" type="button" id="saveDraft">임시저장</button><button class="btn" type="submit">저장하고 반영</button></div>
+      <div class="savebar"><button class="btn ghost" type="button" id="cancelEdit">목록</button><button class="btn ghost" type="button" id="saveDraft">임시저장</button><button class="btn" type="submit">저장하기</button></div>
     </form>
   </div>
 </div>
 
-<!-- 구조 -->
+<!-- 구조 설명 -->
 <section class="wrap doc" id="arch" hidden>
   <h1>방문자가 몰려도 안 다운되는 구조</h1>
-  <p class="muted">홈페이지를 미리 인쇄해 전국 여러 지점에 나눠 두는 방식이에요. 방문자는 가까운 지점에서 받아 가니까 한 곳에 줄이 서지 않아요.</p>
+  <p class="muted">홈페이지를 미리 인쇄해 여러 지역의 지점에 나눠 두는 방식이에요. 방문자는 가까운 지점에서 받아 가니까 한 곳에 줄이 생기지 않아요.</p>
   <div class="arch">
-    <div><b>① 운영진이 글·사진 올림</b><small>쉬운 관리자에서 저장. 글은 DB(Supabase), 사진은 Cloudflare R2에</small></div>
-    <div><b>② 사진 자동 최적화</b><small>올릴 때 큰 사진·썸네일로 줄여 저장. 휴대폰 사진 그대로 올려도 돼요</small></div>
-    <div><b>③ 홈페이지를 다시 만들어 배포</b><small>저장을 모아서 보통 5분 안팎에 반영. 무료 빌드 한도(월 500회) 안에서 운영</small></div>
-    <div><b>④ 방문자는 CDN에서 받음</b><small>페이지와 사진은 Cloudflare CDN이 보내요. 서버가 바빠지지 않아요</small></div>
+    <div class="card"><b>① 운영진이 글·사진 올림</b><small>쉬운 관리자에서 저장. 글은 DB(Supabase), 사진은 Cloudflare R2에</small></div>
+    <div class="card"><b>② 사진 자동 최적화</b><small>올릴 때 큰 사진·썸네일로 줄여 저장. 휴대폰 사진 그대로 올려도 돼요</small></div>
+    <div class="card"><b>③ 홈페이지를 다시 만들어 배포</b><small>저장을 모아서 보통 5분 안팎에 반영. 무료 빌드 한도(월 500회) 안에서 운영</small></div>
+    <div class="card"><b>④ 방문자는 CDN에서 받음</b><small>페이지와 사진은 Cloudflare CDN이 보내요. 서버가 바빠지지 않아요</small></div>
   </div>
   <ul>
     <li><b>트래픽:</b> 페이지와 사진은 Cloudflare CDN의 정적 파일로 나가서 전송량·요청 수 한도가 없어요. 서버 코드가 도는 곳은 신청 폼 접수와 옛 주소 이동뿐이라 하루 10만 건 무료 한도에 비해 여유가 커요.</li>
-    <li><b>사진 비용:</b> 사진은 전송료가 없는 Cloudflare R2에 둬서, 구조 영상이 퍼져도 사진 전송 요금이 늘지 않아요.</li>
+    <li><b>사진 비용:</b> 사진은 전송료가 없는 Cloudflare R2에 둬서, 구조 영상이 퍼져도 사진 전송료는 0원이에요.</li>
     <li><b>비공개 글:</b> 숨김·임시저장 글은 공개 화면에 만들어지지 않고 DB 권한으로도 막아요. 예전 배포 주소와 미리보기 주소는 운영진만 열 수 있게 잠가요.</li>
-    <li><b>장애 복구:</b> 화면은 배포할 때마다 이전 버전이 남아 버튼 하나로 되돌려요. DB 자동 백업은 Supabase 유료 요금제(월 25달러~)에서 매일 돼요.</li>
+    <li><b>장애 복구:</b> 화면은 배포할 때마다 이전 버전이 남아 몇 분 안에 되돌려요. DB 자동 백업은 Supabase 유료 요금제(월 25달러~)에서 매일 돼요.</li>
     <li><b>옛 주소:</b> 카페24의 '?no=123' 같은 옛 주소는 작은 Cloudflare 프로그램이 대응표를 보고 새 주소로 영구 이동(301)시켜요.</li>
     <li><b>플랫폼 종속 탈피:</b> 소스는 단체 소유 저장소에, 데이터는 표준 DB(PostgreSQL)에 둬서 언제든 다른 곳으로 옮길 수 있어요.</li>
   </ul>
@@ -368,9 +615,9 @@ header.site{background:rgba(243,242,236,.92)}
 
 <script>
 (function(){
-  var KEY = 'rescue-demo-v1';
+  var KEY = 'rescue-demo-v2', FAVK = 'rescue-fav';
   var STATUSES = ['입양 가능','임시보호 중','입양 심사 중','입양 완료'];
-  var SCLS = {'입양 가능':'b-ok','임시보호 중':'b-foster','입양 심사 중':'b-rev','입양 완료':'b-done'};
+  var SCLS = {'입양 가능':'b-ok','임시보호 중':'b-fos','입양 심사 중':'b-rev','입양 완료':'b-done'};
   var CATS = ['https://cdn2.thecatapi.com/images/gMjW5RYB0.jpg','https://cdn2.thecatapi.com/images/cko.jpg','https://cdn2.thecatapi.com/images/1v4.jpg','https://cdn2.thecatapi.com/images/99c.jpg','https://cdn2.thecatapi.com/images/bRLzjs5nf.jpg','https://cdn2.thecatapi.com/images/e10.jpg'];
   function dog(id, w, h){ return 'https://placedog.net/' + (w || 600) + '/' + (h || 600) + '?id=' + id; }
   function pad(n){ return String(n).padStart(2, '0'); }
@@ -378,62 +625,114 @@ header.site{background:rgba(243,242,236,.92)}
   function ago(n){ var d = new Date(); d.setDate(d.getDate() - n); return ymd(d); }
   function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
   function safeUrl(u){ u = String(u || ''); return /^(https:\/\/|data:image\/(jpeg|png|webp);)/.test(u) ? u : ''; }
-  document.addEventListener('load', function(e){ if (e.target.tagName === 'IMG' && e.target.closest('.acard')) e.target.classList.add('ok'); }, true);
-  function toast(m){ var t = document.getElementById('toast'); t.textContent = m; t.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(function(){ t.hidden = true; }, 2200); }
-  function ageText(m){ if (m === '' || m == null) return '나이 미상'; m = +m || 0; return m < 12 ? m + '개월' : Math.floor(m / 12) + '살' + (m % 12 ? ' ' + (m % 12) + '개월' : ''); }
+  function toast(m){ var el = document.getElementById('toast'); el.textContent = m; el.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(function(){ el.hidden = true; }, 2400); }
+  function icon(id, s){ return '<svg width="' + (s || 14) + '" height="' + (s || 14) + '" aria-hidden="true"><use href="#i-' + id + '"/></svg>'; }
 
+  // ---------- 영문 전환 (용어집 방식) ----------
+  var en = false;
+  var EN = {org:'○○ Animal Rescue (sample)', m1:'About', m2:'Activities', m3:'Adopt & Foster', m4:'Volunteer', m5:'Donate', m6:'News & Contact',
+    hi:'Welcome', hiS:'Thank you for being here', heroT:'From rescue to adoption,<br>we stay till the end', heroS:'We rescue animals in danger, treat them, and find them families for life.',
+    cta1:'Donate monthly', q1:'Adopt', q2:'Donate', q2s:'Monthly, one-time, supplies', q3:'Volunteer', q3s:'Shelter & transport',
+    s1:'animals rescued', s2:'adopted', s3:'monthly donors', waitT:'Waiting for a family', newsT:'Latest rescues', all:'See all ›',
+    t1:'Home', t2:'Adopt', t3:'Donate', t4:'Contact', t5:'Menu', procT:'How adoption works',
+    st1:'Apply', st1s:'From the animal page', st2:'Phone talk', st2s:'About your home', st3:'Meet', st3s:'At shelter or foster home', st4:'Agreement', st4s:'Fee & pledge', st5:'Follow-up', st5s:'Check-ins at 1 & 3 months',
+    searchPh:'Find a friend by name', namePh:'Search by name'};
+  var TX = {'입양 가능':'Available','임시보호 중':'In foster','입양 심사 중':'In review','입양 완료':'Adopted','전체':'All','강아지':'Dog','고양이':'Cat','모든 상태':'Any status','수컷':'Male','암컷':'Female','입양 신청하기':'Apply to adopt','임시보호 신청':'Apply to foster','다른 친구들':'Other friends','성격':'Personality','구조 배경':'Rescue story','상태 기록':'History','입양 후기':'Adoption story','건강':'Health'};
+  function t(k){ return en && TX[k] ? TX[k] : k; }
+  var KO = {}, KOPH = {};
+  document.querySelectorAll('[data-i18n]').forEach(function(el){ var k = el.dataset.i18n; if (!(k in KO)) KO[k] = el.innerHTML; });
+  document.querySelectorAll('[data-i18n-ph]').forEach(function(el){ KOPH[el.dataset.i18nPh] = el.placeholder; });
+  function applyLang(){
+    document.documentElement.lang = en ? 'en' : 'ko';
+    document.querySelectorAll('[data-i18n]').forEach(function(el){ var k = el.dataset.i18n; el.innerHTML = en ? (EN[k] || KO[k]) : KO[k]; });
+    document.querySelectorAll('[data-i18n-ph]').forEach(function(el){ var k = el.dataset.i18nPh; el.placeholder = en ? (EN[k] || KOPH[k]) : KOPH[k]; });
+    document.getElementById('lang').textContent = en ? 'KO' : 'EN';
+    buildChips(); route();
+  }
+  document.getElementById('lang').onclick = function(){ en = !en; applyLang(); toast(en ? '용어집 기반 영문 전환 예시예요. 동물 소개글은 번역문을 따로 저장해요' : '한국어로 돌아왔어요'); };
+
+  // ---------- 데이터 ----------
   function seed(){
     var A = [
-      ['보리','개','수컷',18,7.5,'입양 가능',[dog(3),dog(4)],'중성화 완료, 종합백신 3차','공사장 근처에서 혼자 떨고 있던 아이를 구조했어요. 사람을 좋아하고 산책을 즐겨요.'],
-      ['나비','고양이','암컷',9,3.1,'입양 가능',[CATS[0],CATS[1]],'중성화 예정, 기초 접종 완료','아파트 화단에서 어미 없이 발견됐어요. 겁이 많지만 손길에 금방 익숙해져요.'],
-      ['단풍','개','암컷',48,12.2,'입양 심사 중',[dog(7)],'중성화 완료, 심장사상충 음성','번식장 구조 아이예요. 지금 한 가정과 입양 심사를 진행하고 있어요.'],
-      ['콩이','개','수컷',6,2.4,'임시보호 중',[dog(11),dog(12)],'1차 접종 완료','비 오는 날 상자에 담겨 버려져 있었어요. 지금은 임시보호 가정에서 지내요.'],
-      ['치즈','고양이','수컷',30,5.6,'입양 가능',[CATS[2]],'중성화 완료, 구내염 치료 완료','길에서 구내염으로 밥을 못 먹던 아이를 치료했어요. 이제 밥도 잘 먹어요.'],
-      ['해피','개','암컷',96,9.0,'입양 완료',[dog(15)],'중성화 완료, 슬개골 수술','노견이라 입양이 어려울 거라 했지만 따뜻한 가족을 만났어요.'],
-      ['구름','고양이','암컷',14,3.8,'입양 가능',[CATS[3],CATS[4]],'중성화 완료, 접종 완료','재개발 지역에서 구조했어요. 창가에서 햇볕 쬐는 걸 좋아해요.'],
-      ['장군','개','수컷',60,24.5,'입양 가능',[dog(18)],'중성화 완료, 피부병 치료 중','짧은 목줄에 묶여 지내던 대형견이에요. 덩치와 달리 순하고 차분해요.'],
-      ['솜이','고양이','암컷',4,1.2,'임시보호 중',[CATS[5]],'기초 접종 예정','눈병이 심한 채로 구조됐어요. 치료하며 임시보호 가정에서 크고 있어요.'],
-      ['두부','개','수컷',36,6.8,'입양 가능',[dog(25),dog(26)],'중성화 완료, 종합백신 완료','유기견 보호소 안락사 명단에서 데려왔어요. 다른 강아지와도 잘 지내요.']
+      ['보리','개','수컷',18,7.5,'입양 가능',[dog(3),dog(4)],'중성화 완료, 종합백신 3차','공사장 근처에서 혼자 떨고 있던 아이를 구조했어요. 사람을 좋아하고 산책을 즐겨요.','사람 좋아함, 산책 좋아함, 배변 훈련 완료'],
+      ['나비','고양이','암컷',9,3.1,'입양 가능',[CATS[0],CATS[1]],'중성화 예정, 기초 접종 완료','아파트 화단에서 어미 없이 발견됐어요. 겁이 많지만 손길에 금방 익숙해져요.','조용함, 낯가림 조금'],
+      ['단풍','개','암컷',48,12.2,'입양 심사 중',[dog(7)],'중성화 완료, 심장사상충 음성','번식장 구조 아이예요. 지금 한 가정과 입양 심사를 진행하고 있어요.','차분함, 다른 강아지와 잘 지냄'],
+      ['콩이','개','수컷',6,2.4,'임시보호 중',[dog(11),dog(12)],'1차 접종 완료','비 오는 날 상자에 담겨 버려져 있었어요. 지금은 임시보호 가정에서 지내요.','호기심 많음, 장난꾸러기'],
+      ['치즈','고양이','수컷',30,5.6,'입양 가능',[CATS[2]],'중성화 완료, 구내염 치료 완료','길에서 구내염으로 밥을 못 먹던 아이를 치료했어요. 이제 밥도 잘 먹어요.','애교 많음, 무릎냥이'],
+      ['해피','개','암컷',96,9.0,'입양 완료',[dog(15)],'중성화 완료, 슬개골 수술','노견이라 입양이 어려울 거라 했지만 따뜻한 가족을 만났어요.','순함, 잠이 많음'],
+      ['구름','고양이','암컷',14,3.8,'입양 가능',[CATS[3],CATS[4]],'중성화 완료, 접종 완료','재개발 지역에서 구조했어요. 창가에서 햇볕 쬐는 걸 좋아해요.','독립적, 햇볕 좋아함'],
+      ['장군','개','수컷',60,24.5,'입양 가능',[dog(18)],'중성화 완료, 피부병 치료 중','짧은 목줄에 묶여 지내던 대형견이에요. 덩치와 달리 순하고 차분해요.','순함, 대형견, 마당 있으면 좋아요'],
+      ['솜이','고양이','암컷',4,1.2,'임시보호 중',[CATS[5]],'기초 접종 예정','눈병이 심한 채로 구조됐어요. 치료하며 임시보호 가정에서 크고 있어요.','아기 고양이, 잘 놀아요'],
+      ['두부','개','수컷',36,6.8,'입양 가능',[dog(25),dog(26)],'중성화 완료, 종합백신 완료','유기견 보호소 안락사 명단에서 데려왔어요. 다른 강아지와도 잘 지내요.','사교적, 실내 생활 적응']
     ];
     return {animals: A.map(function(a, i){
       var h = [{date:ago(40 + i * 3), text:'구조 · 센터 보호 시작'}];
       if (a[5] !== '입양 가능') h.push({date:ago(5 + i), text:'입양 상태: 입양 가능 → ' + a[5]});
-      return {id:'a' + (i+1), name:a[0], kind:a[1], sex:a[2], age:a[3], weight:a[4], status:a[5], photos:a[6], health:a[7], story:a[8], video:'', review: a[5] === '입양 완료' ? '처음엔 계단도 무서워했는데 이제 소파 주인이 됐어요. 함께해 주셔서 감사해요. — 해피네 가족' : '', vis:'pub', draft:false, updated:h[h.length-1].date, history:h};
+      return {id:'a' + (i+1), name:a[0], kind:a[1], sex:a[2], age:a[3], weight:a[4], status:a[5], photos:a[6], health:a[7], story:a[8], traits:a[9], video:'', review: a[5] === '입양 완료' ? '처음엔 계단도 무서워했는데 이제 소파 주인이 됐어요. 함께해 주셔서 감사해요. — 해피네 가족' : '', vis:'pub', draft:false, updated:h[h.length-1].date, history:h};
     }), news:[
       {t:'장마철 침수 지역 고양이 11마리 구조', d:ago(2), img:CATS[1]},
       {t:'번식장 구조견 23마리, 모두 치료 시작했어요', d:ago(6), img:dog(30, 800, 500)},
       {t:'10월 입양 행사에서 8마리가 가족을 만났어요', d:ago(12), img:dog(33, 800, 500)}
     ]};
   }
-  var db = (function(){ try { var s = JSON.parse(localStorage.getItem(KEY)); if (s && Array.isArray(s.animals)) return s; } catch(e){} return seed(); })();
-  function save(){ try { localStorage.setItem(KEY, JSON.stringify(db)); return true; } catch(e){ return false; } }
+  var db = (function(){ try { var s = JSON.parse(localStorage.getItem(KEY)); if (s && Array.isArray(s.animals) && Array.isArray(s.news)) return s; } catch(e){} return seed(); })();
+  db.animals.forEach(function(a){ delete a.syncing; delete a.synced; });
+  function save(){ try { localStorage.setItem(KEY, JSON.stringify(db, function(k, v){ return k === 'syncing' || k === 'synced' ? undefined : v; })); return true; } catch(e){ return false; } }
+  function favs(){ try { return JSON.parse(localStorage.getItem(FAVK)) || []; } catch(e){ return []; } }
+  function setFavs(f){ try { localStorage.setItem(FAVK, JSON.stringify(f)); } catch(e){} }
+  function visible(a){ return a.vis === 'pub' && !a.draft; }
+  function kindLabel(k){ return t(k === '개' ? '강아지' : k); }
+  function ageText(m){ if (m === '' || m == null) return en ? 'Age unknown' : '나이 미상'; m = +m || 0; if (en) return m < 12 ? m + ' mo' : Math.floor(m / 12) + ' yr' + (m % 12 ? ' ' + (m % 12) + ' mo' : ''); return m < 12 ? m + '개월' : Math.floor(m / 12) + '살' + (m % 12 ? ' ' + (m % 12) + '개월' : ''); }
+  function cls(s){ return SCLS[s] || 'b-ok'; }
+  function inRange(v, r){ if (!r) return true; if (v === '' || v == null) return false; var p = r.split('-'), hi = +p[1] >= 99 ? Infinity : +p[1]; return +v >= +p[0] && +v < hi; }
+  function ytId(u){ try { var x = new URL(u), h = x.hostname.replace(/^(www|m|music)\./, ''); if (h === 'youtu.be') return (x.pathname.slice(1).match(/^[\w-]{11}/) || [''])[0]; if (h !== 'youtube.com') return ''; if (x.searchParams.get('v')) return (x.searchParams.get('v').match(/^[\w-]{11}/) || [''])[0]; var m = x.pathname.match(/^\/(?:embed|shorts|live)\/([\w-]{11})/); return m ? m[1] : ''; } catch(e){ return ''; } }
 
-  // ---------- 영문 전환 (용어집 방식 예시) ----------
-  var EN = {org:'○○ Animal Rescue (sample)', m1:'About', m2:'Activities', m3:'Adopt & Foster', m4:'Volunteer', m5:'Donate', m6:'News & Contact', heroT:'From rescue to adoption,<br>we stay till the end', heroS:'We rescue animals in danger, treat them, and find them families for life.', s1:'animals rescued', s2:'adopted', s3:'monthly donors', cta1:'Donate monthly', cta2:'Adopt', newsT:'Latest rescues', waitT:'Waiting for a family'};
-  var KO = {};
-  document.querySelectorAll('[data-i18n]').forEach(function(el){ KO[el.dataset.i18n] = KO[el.dataset.i18n] || el.innerHTML; });
-  var en = false;
-  document.getElementById('lang').onclick = function(){ en = !en; this.textContent = en ? 'KO' : 'EN'; document.querySelectorAll('[data-i18n]').forEach(function(el){ var k = el.dataset.i18n; el.innerHTML = en ? (EN[k] || KO[k]) : KO[k]; }); toast(en ? '용어집 기반 영문 전환 예시예요 (동물 소개글은 번역문을 따로 저장)' : '한국어로 돌아왔어요'); };
+  // 이미지: 오면 부드럽게, 실패하면 발바닥 자리표시
+  function markLoaded(root){ (root || document).querySelectorAll('img').forEach(function(im){ if (im.complete && im.naturalWidth) im.classList.add('ok'); }); }
+  document.addEventListener('load', function(e){ if (e.target.tagName === 'IMG') e.target.classList.add('ok'); }, true);
+  document.addEventListener('error', function(e){ var im = e.target; if (im.tagName !== 'IMG' || im.dataset.fb) return; im.dataset.fb = '1'; im.style.visibility = 'hidden'; var box = im.parentElement; if (box && !box.querySelector('.ph-fallback') && box.tagName !== 'BUTTON'){ var f = document.createElement('span'); f.className = 'ph-fallback'; f.innerHTML = icon('paw', 40); box.appendChild(f); } }, true);
 
-  // ---------- 페이지 ----------
-  var current = 'home';
-  var PAGES = ['home','adopt','detail','about','activity','volunteer','donate','contact','admin','arch'];
+  // ---------- 카드 ----------
+  function card(a){
+    var fav = favs().indexOf(a.id) >= 0, done = a.status === '입양 완료';
+    return '<div class="acard" role="link" tabindex="0" data-animal="' + esc(a.id) + '" aria-label="' + esc(a.name) + ' ' + esc(a.status) + '"><div class="im"><img loading="lazy" alt="" src="' + esc(safeUrl(a.photos[0])) + '">' +
+      (done ? '<div class="done-ribbon">' + (en ? 'Adopted ♥' : '입양 완료') + '</div>' : '') +
+      '<span class="badge ' + cls(a.status) + '">' + esc(t(a.status)) + '</span>' +
+      (done ? '' : '<button type="button" class="fav' + (fav ? ' on' : '') + '" data-fav="' + esc(a.id) + '" aria-pressed="' + fav + '" aria-label="관심 친구로 저장">' + icon('heart', 18) + '</button>') + '</div>' +
+      '<div class="bd"><div class="nm">' + esc(a.name) + '<span class="kind">' + kindLabel(a.kind) + '</span></div>' +
+      '<div class="meta"><span>' + icon(a.sex === '수컷' ? 'male' : 'female') + esc(t(a.sex)) + '</span><span>' + icon('cake') + ageText(a.age) + '</span><span class="w">' + icon('kg') + esc(a.weight) + 'kg</span></div></div></div>';
+  }
+  function bindCards(root){
+    markLoaded(root);
+    root.querySelectorAll('[data-animal]').forEach(function(c){
+      c.onclick = function(e){
+        var f = e.target.closest('[data-fav]');
+        if (f){ e.stopPropagation(); var list = favs(), k = list.indexOf(f.dataset.fav); if (k >= 0) list.splice(k, 1); else list.push(f.dataset.fav); setFavs(list); var on = k < 0; f.classList.toggle('on', on); f.setAttribute('aria-pressed', String(on)); toast(on ? '관심 친구로 저장했어요. 입양 목록의 ♡ 관심에서 모아 봐요' : '관심 친구에서 뺐어요'); if (curKind === 'fav') renderList(); return; }
+        go('detail', c.dataset.animal);
+      };
+      c.onkeydown = function(e){ if (e.key === 'Enter' && !e.target.closest('[data-fav]')) go('detail', c.dataset.animal); };
+    });
+  }
+
+  // ---------- 페이지 이동 ----------
+  var SITE = ['home','about','activity','adopt','detail','volunteer','donate','contact'];
+  var current = 'home', lastEdited = null;
   function go(p, id, fromRoute){
-    if (PAGES.indexOf(p) < 0) p = 'home';
-    var site = ['home','adopt','detail','about','activity','volunteer','donate','contact'];
-    document.getElementById('site').hidden = site.indexOf(p) < 0;
+    if (SITE.concat(['admin','arch']).indexOf(p) < 0) p = 'home';
+    document.getElementById('sheet').hidden = true;
+    var inSite = SITE.indexOf(p) >= 0;
+    document.getElementById('site').hidden = !inSite;
     document.getElementById('admin').hidden = p !== 'admin';
     document.getElementById('arch').hidden = p !== 'arch';
-    document.querySelectorAll('[data-go]').forEach(function(b){ b.classList.toggle('on', b.dataset.go === p || (b.dataset.go === 'home' && site.indexOf(p) >= 0)); });
-    if (site.indexOf(p) >= 0){
-      var page = ['home','adopt','detail'].indexOf(p) >= 0 ? p : 'other';
-      document.querySelectorAll('#site .page').forEach(function(s){ s.hidden = s.id !== 'p-' + page; });
+    document.querySelectorAll('[data-go]').forEach(function(b){ b.classList.toggle('on', b.dataset.go === p || (b.dataset.go === 'home' && inSite)); });
+    if (inSite){
+      document.querySelectorAll('#site .page').forEach(function(s){ s.hidden = s.id !== 'p-' + p; });
       document.querySelectorAll('.menu [data-page], .tabbar [data-page]').forEach(function(b){ b.classList.toggle('on', b.dataset.page === p || (p === 'detail' && b.dataset.page === 'adopt')); });
-      if (page === 'other') document.getElementById('otherT').textContent = document.querySelector('.menu [data-page="' + p + '"]').textContent;
-      document.querySelector('.tabbar').hidden = false;
       if (p === 'home') renderHome();
+      if (p === 'activity') renderNews('activityNews');
       if (p === 'adopt') renderList();
       if (p === 'detail') renderDetail(id);
+      if (p === 'contact') ['n1','n2','n3'].forEach(function(k, i){ document.getElementById(k).textContent = ago(3 + i * 9); });
     }
     if (p === 'admin') showAdminList();
     current = p;
@@ -443,112 +742,187 @@ header.site{background:rgba(243,242,236,.92)}
   }
   function route(){ var h = (location.hash || '#home').slice(1), m = h.match(/^detail-(.+)$/); if (m) go('detail', m[1], true); else go(h || 'home', null, true); }
   window.addEventListener('popstate', route);
-  document.addEventListener('click', function(e){ var b = e.target.closest('[data-page]'); if (b){ go(b.dataset.page); } var g = e.target.closest('[data-go]'); if (g){ go(g.dataset.go); } });
+  document.addEventListener('click', function(e){
+    var b = e.target.closest('[data-page]'); if (b){ e.preventDefault(); go(b.dataset.page); return; }
+    var g = e.target.closest('[data-go]'); if (g){ go(g.dataset.go); }
+  });
+  document.getElementById('openSheet').onclick = function(){ document.getElementById('sheet').hidden = false; };
+  document.getElementById('sheet').onclick = function(e){ if (e.target === this) this.hidden = true; };
 
-  function visible(a){ return a.vis === 'pub' && !a.draft; }
-  function cls(s){ return SCLS[s] || 'b-ok'; }
-  var FAVK = 'rescue-fav';
-  function favs(){ try { return JSON.parse(localStorage.getItem(FAVK)) || []; } catch(e){ return []; } }
-  function setFavs(f){ try { localStorage.setItem(FAVK, JSON.stringify(f)); } catch(e){} }
-  var IC = {
-    age:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 21h16v-8H4z"/><path d="M4 16c2 1.5 4 1.5 6 0s4-1.5 6 0 4 1.5 4 0"/><path d="M12 13V9"/><path d="M12 6.5c.8-.8.8-2 0-3-.8 1-.8 2.2 0 3z"/></svg>',
-    kg:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M8.5 10a3.5 3.5 0 0 1 7 0"/><path d="M12 10l1.5-2"/></svg>',
-    male:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="14" r="5"/><path d="M14 10l6-6M15 4h5v5"/></svg>',
-    female:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="9" r="5"/><path d="M12 14v7M9 18h6"/></svg>',
-    heart:'<svg width="18" height="18" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>'
-  };
-  function card(a){
-    var img = safeUrl(a.photos[0]), fav = favs().indexOf(a.id) >= 0;
-    return '<div class="acard" role="link" tabindex="0" data-animal="' + esc(a.id) + '"><div class="im"><img loading="lazy" alt="' + esc(a.name) + '" src="' + esc(img) + '"><span class="badge ' + cls(a.status) + '">' + esc(a.status) + '</span>' +
-      '<button type="button" class="fav' + (fav ? ' on' : '') + '" data-fav="' + esc(a.id) + '" aria-pressed="' + fav + '" aria-label="' + esc(a.name) + ' 관심 친구로 저장">' + IC.heart + '</button>' +
-      (a.status === '입양 완료' ? '<div class="done-ribbon">입양 완료 ♥</div>' : '') + '</div>' +
-      '<div class="bd"><div class="nm">' + esc(a.name) + ' <span class="kind">' + (a.kind === '개' ? '강아지' : esc(a.kind)) + '</span></div>' +
-      '<div class="meta"><span>' + (a.sex === '수컷' ? IC.male : IC.female) + esc(a.sex) + '</span><span>' + IC.age + ageText(a.age) + '</span><span>' + IC.kg + esc(a.weight) + 'kg</span></div></div></div>';
-  }
-  function bindCards(root){
-    root.querySelectorAll('[data-animal]').forEach(function(c){
-      c.onclick = function(e){
-        var f = e.target.closest('[data-fav]');
-        if (f){ e.stopPropagation(); var list = favs(), k = list.indexOf(f.dataset.fav); if (k >= 0) list.splice(k, 1); else list.push(f.dataset.fav); setFavs(list); var on = k < 0; f.classList.toggle('on', on); f.setAttribute('aria-pressed', String(on)); toast(on ? '관심 친구로 저장했어요' : '관심 친구에서 뺐어요'); return; }
-        go('detail', c.dataset.animal);
-      };
-      c.onkeydown = function(e){ if (e.key === 'Enter' && !e.target.closest('[data-fav]')) go('detail', c.dataset.animal); };
-    });
+  // ---------- 홈 ----------
+  function renderNews(target){
+    var el = document.getElementById(target);
+    el.innerHTML = db.news.map(function(n){ return '<div class="card news"><div class="im"><img loading="lazy" src="' + esc(safeUrl(n.img)) + '" alt=""></div><div class="bd"><b>' + esc(n.t) + '</b><span class="small">' + esc(n.d) + '</span></div></div>'; }).join('');
+    markLoaded(el);
   }
   function renderHome(){
-    document.getElementById('newsCards').innerHTML = db.news.map(function(n){ return '<div class="news"><div class="im"><img loading="lazy" src="' + esc(safeUrl(n.img)) + '" alt=""></div><div class="bd"><b>' + esc(n.t) + '</b><span class="small">' + esc(n.d) + '</span></div></div>'; }).join('');
+    var wait = db.animals.filter(function(a){ return visible(a) && a.status === '입양 가능'; });
+    document.getElementById('qWait').textContent = en ? wait.length + ' friends waiting' : '기다리는 친구 ' + wait.length + '마리';
     var el = document.getElementById('homeAnimals');
-    el.innerHTML = db.animals.filter(function(a){ return visible(a) && a.status === '입양 가능'; }).slice(0, 4).map(card).join('');
-    bindCards(el);
+    el.innerHTML = wait.slice(0, 4).map(card).join(''); bindCards(el);
+    renderNews('newsCards');
   }
+  document.getElementById('homeSearch').onsubmit = function(e){
+    e.preventDefault();
+    var v = document.getElementById('homeQ').value.trim();
+    curKind = ''; curStatus = '';
+    ['fSex','fAge','fWeight'].forEach(function(id){ document.getElementById(id).value = ''; });
+    document.getElementById('q').value = v;
+    setMore(!!v); buildChips();
+    go('adopt');
+  };
 
-  var F = ['q','fKind','fSex','fAge','fWeight','fStatus'].map(function(id){ return document.getElementById(id); });
-  F.forEach(function(el){ el.addEventListener('input', renderList); el.addEventListener('change', renderList); });
-  document.querySelectorAll('.chips').forEach(function(box){
-    box.addEventListener('click', function(e){ var b = e.target.closest('button'); if (!b) return; box.querySelectorAll('button').forEach(function(x){ x.classList.toggle('on', x === b); }); var sel = document.getElementById(box.dataset.sel); sel.value = b.dataset.v; sel.dispatchEvent(new Event('change')); });
-  });
-  document.getElementById('moreF').onclick = function(){ var bx = document.getElementById('moreBox'); bx.hidden = !bx.hidden; this.setAttribute('aria-expanded', String(!bx.hidden)); this.textContent = bx.hidden ? '상세 조건 (이름·성별·나이·체중) ▾' : '상세 조건 접기 ▴'; };
-  document.getElementById('homeSearch').onsubmit = function(e){ e.preventDefault(); var v = document.getElementById('homeQ').value.trim(); document.getElementById('q').value = v; if (v){ var bx = document.getElementById('moreBox'), mb = document.getElementById('moreF'); bx.hidden = false; mb.setAttribute('aria-expanded', 'true'); mb.textContent = '상세 조건 접기 ▴'; } renderList(); go('adopt'); };
-  function inRange(v, r){ if (!r) return true; if (v === '' || v == null) return false; var p = r.split('-'), hi = +p[1] >= 99 ? Infinity : +p[1]; return +v >= +p[0] && +v < hi; }
+  // ---------- 입양 목록 ----------
+  var curKind = '', curStatus = '';
+  function buildChips(){
+    var kinds = [['', t('전체')], ['개', t('강아지')], ['고양이', t('고양이')], ['fav', en ? '♡ Saved' : '♡ 관심']];
+    document.getElementById('chipKind').innerHTML = kinds.map(function(k){ return '<button type="button" data-v="' + k[0] + '" class="' + (curKind === k[0] ? 'on' : '') + '">' + esc(k[1]) + '</button>'; }).join('');
+    var sts = [['', t('모든 상태')]].concat(STATUSES.map(function(s){ return [s, t(s)]; }));
+    document.getElementById('chipStatus').innerHTML = sts.map(function(k){ return '<button type="button" data-v="' + k[0] + '" class="' + (curStatus === k[0] ? 'on' : '') + '">' + esc(k[1]) + '</button>'; }).join('');
+    setMore(!document.getElementById('moreBox').hidden);
+  }
+  document.getElementById('chipKind').onclick = function(e){ var b = e.target.closest('button'); if (!b) return; curKind = b.dataset.v; buildChips(); renderList(); };
+  document.getElementById('chipStatus').onclick = function(e){ var b = e.target.closest('button'); if (!b) return; curStatus = b.dataset.v; buildChips(); renderList(); };
+  function setMore(open){ var bx = document.getElementById('moreBox'), mb = document.getElementById('moreF'); bx.hidden = !open; mb.setAttribute('aria-expanded', String(open)); mb.textContent = open ? (en ? 'Hide filters ▴' : '상세 조건 접기 ▴') : (en ? 'More filters (name, sex, age, weight) ▾' : '상세 조건 (이름·성별·나이·체중) ▾'); }
+  document.getElementById('moreF').onclick = function(){ setMore(document.getElementById('moreBox').hidden); };
+  ['q','fSex','fAge','fWeight'].forEach(function(id){ var el = document.getElementById(id); el.addEventListener('input', renderList); el.addEventListener('change', renderList); });
   function renderList(){
-    var q = F[0].value.trim();
-    var list = db.animals.filter(function(a){ return visible(a) && (!q || a.name.indexOf(q) >= 0) && (!F[1].value || a.kind === F[1].value) && (!F[2].value || a.sex === F[2].value) && inRange(a.age, F[3].value) && inRange(a.weight, F[4].value) && (!F[5].value || a.status === F[5].value); });
+    var q = document.getElementById('q').value.trim(), fv = favs();
+    var sx = document.getElementById('fSex').value, ag = document.getElementById('fAge').value, wt = document.getElementById('fWeight').value;
+    var list = db.animals.filter(function(a){
+      if (!visible(a)) return false;
+      if (curKind === 'fav' ? fv.indexOf(a.id) < 0 : (curKind && a.kind !== curKind)) return false;
+      return (!curStatus || a.status === curStatus) && (!q || a.name.indexOf(q) >= 0) && (!sx || a.sex === sx) && inRange(a.age, ag) && inRange(a.weight, wt);
+    });
     var el = document.getElementById('list');
-    el.innerHTML = list.length ? list.map(card).join('') : '<div class="empty" style="grid-column:1/-1">조건에 맞는 친구가 없어요. 조건을 바꿔 보세요.</div>';
+    el.innerHTML = list.length ? list.map(card).join('') : '<div class="empty" style="grid-column:1/-1">' + (curKind === 'fav' ? '아직 ♡로 저장한 친구가 없어요.' : '조건에 맞는 친구가 없어요. 조건을 바꿔 보세요.') + '</div>';
     bindCards(el);
   }
 
-  function ytId(u){ try { var x = new URL(u), h = x.hostname.replace(/^(www|m|music)\./, ''); if (h === 'youtu.be') return (x.pathname.slice(1).match(/^[\w-]{11}/) || [''])[0]; if (h !== 'youtube.com') return ''; if (x.searchParams.get('v')) return (x.searchParams.get('v').match(/^[\w-]{11}/) || [''])[0]; var m = x.pathname.match(/^\/(?:embed|shorts|live)\/([\w-]{11})/); return m ? m[1] : ''; } catch(e){ return ''; } }
+  // ---------- 상세 ----------
   function renderDetail(id){
     var a = db.animals.filter(function(x){ return x.id === id; })[0], el = document.getElementById('p-detail');
-    if (!a || !visible(a)){ el.innerHTML = '<div class="empty">공개되지 않았거나 없는 페이지예요.</div><p><button class="btn ghost" data-page="adopt" type="button">목록으로</button></p>'; return; }
-    var ph = a.photos.map(safeUrl).filter(Boolean);
-    var yt = ytId(a.video);
-    el.innerHTML = '<p><button class="btn sm ghost" data-page="adopt" type="button">← 목록</button></p><div class="detail"><div class="gallery"><div class="main"><img id="mainImg" src="' + esc(ph[0] || '') + '" alt="' + esc(a.name) + '"></div><div class="thumbs">' + ph.map(function(p, i){ return '<button type="button" class="' + (i ? '' : 'on') + '" data-src="' + esc(p) + '"><img loading="lazy" src="' + esc(p) + '" alt=""></button>'; }).join('') + '</div>' +
-      (yt ? '<div style="margin-top:12px;aspect-ratio:16/9;border-radius:14px;overflow:hidden"><iframe width="100%" height="100%" src="https://www.youtube-nocookie.com/embed/' + yt + '" title="영상" frameborder="0" allowfullscreen loading="lazy"></iframe></div>' : '') + '</div>' +
-      '<div><span class="badge ' + cls(a.status) + '">' + esc(a.status) + '</span><h1 style="margin-top:8px">' + esc(a.name) + '</h1>' +
-      '<dl class="kv"><dt>동물</dt><dd>' + esc(a.kind) + '</dd><dt>성별</dt><dd>' + esc(a.sex) + '</dd><dt>나이</dt><dd>' + ageText(a.age) + '</dd><dt>체중</dt><dd>' + esc(a.weight) + 'kg</dd><dt>건강</dt><dd>' + esc(a.health) + '</dd></dl>' +
-      '<div class="box"><h3>구조 배경</h3><div class="muted" style="white-space:pre-wrap">' + esc(a.story) + '</div></div>' +
-      (a.status === '입양 완료' && a.review ? '<div class="box review"><h3>♥ 입양 후기</h3><div style="white-space:pre-wrap">' + esc(a.review) + '</div></div>' : '') +
-      (a.status === '입양 가능' || a.status === '임시보호 중' ? '<button class="btn big" type="button" id="applyBtn" style="width:100%">입양·임시보호 신청하기</button>' : a.status === '입양 심사 중' ? '<div class="notice">지금 입양 심사가 진행 중이에요. 결과가 나오면 다시 알려 드려요.</div>' : '<div class="notice" style="background:var(--gray-bg);color:#444">새 가족을 만났어요. 다른 친구들도 만나 주세요!</div>') +
-      '<div class="box" style="margin-top:12px"><h3>상태 기록</h3><ul class="hist">' + a.history.slice().reverse().map(function(h){ return '<li>' + esc(h.date) + ' · ' + esc(h.text) + '</li>'; }).join('') + '</ul></div></div></div>';
+    if (!a || !visible(a)){ el.innerHTML = '<div class="empty">공개되지 않았거나 없는 페이지예요. 숨긴 동물은 주소를 알아도 볼 수 없어요.</div><p><button class="btn ghost" data-page="adopt" type="button">목록으로</button></p>'; return; }
+    var ph = a.photos.map(safeUrl).filter(Boolean), yt = ytId(a.video), fav = favs().indexOf(a.id) >= 0;
+    var others = db.animals.filter(function(x){ return x.id !== a.id && visible(x) && x.status !== '입양 완료'; }).slice(0, 6);
+    var neut = /중성화 완료/.test(a.health), vacc = /접종|백신/.test(a.health);
+    var traits = String(a.traits || '').split(',').map(function(s){ return s.trim(); }).filter(Boolean);
+    var favBtn = '<button class="icon-btn" type="button" id="dFav" aria-pressed="' + fav + '" aria-label="관심 친구로 저장" style="color:' + (fav ? 'var(--heart)' : 'inherit') + '">' + icon('heart', 20) + '</button>';
+    var action = '';
+    if (a.status === '입양 가능') action = '<div class="apply-row">' + favBtn + '<button class="icon-btn" type="button" id="dShare" aria-label="공유">' + icon('share', 20) + '</button><button class="btn" type="button" data-apply="입양">' + t('입양 신청하기') + '</button></div><button class="link-btn" type="button" data-apply="임시보호" style="padding-left:0">' + t('임시보호 신청') + ' ›</button>';
+    else if (a.status === '임시보호 중') action = '<div class="notice fos">지금은 임시보호 가정에서 지내요. 입양 신청은 할 수 있어요.</div><div class="apply-row">' + favBtn + '<button class="btn" type="button" data-apply="입양">' + t('입양 신청하기') + '</button></div>';
+    else if (a.status === '입양 심사 중') action = '<div class="notice rev">지금 입양 심사가 진행 중이에요. 결과가 나오면 다시 알려 드려요.</div>';
+    else action = '<div class="notice done">새 가족을 만났어요. 다른 친구들도 만나 주세요!</div>';
+    el.innerHTML = '<p style="margin:0 0 12px"><button class="btn sm ghost" data-page="adopt" type="button">← ' + (en ? 'List' : '목록') + '</button></p>' +
+      '<div class="detail"><div><div class="gallery"><div class="main"><img id="mainImg" src="' + esc(ph[0] || '') + '" alt="' + esc(a.name) + ' 사진"></div><div class="thumbs">' + ph.map(function(p, i){ return '<button type="button" class="' + (i ? '' : 'on') + '" data-src="' + esc(p) + '" aria-label="사진 ' + (i + 1) + '"><img loading="lazy" src="' + esc(p) + '" alt=""></button>'; }).join('') + '</div>' +
+      (yt ? '<div class="video-slot" style="padding:0;border:0"><iframe width="100%" height="100%" src="https://www.youtube-nocookie.com/embed/' + yt + '" title="영상" frameborder="0" allowfullscreen loading="lazy"></iframe></div>' : '<div class="video-slot ph-only">영상 자리 · 관리자에서 유튜브 링크를 넣으면 여기서 재생돼요</div>') + '</div>' +
+      (traits.length ? '<div class="box" style="margin-top:16px"><h3>' + t('성격') + '</h3><div class="tags">' + traits.map(function(x){ return '<span>' + esc(x) + '</span>'; }).join('') + '</div></div>' : '') + '</div>' +
+      '<div class="info"><span class="badge ' + cls(a.status) + '">' + esc(t(a.status)) + '</span><div class="namebar"><h1>' + esc(a.name) + '</h1><div class="muted">' + kindLabel(a.kind) + ' · ' + esc(t(a.sex)) + '</div></div>' +
+      '<div class="info-chips"><span>' + icon(a.sex === '수컷' ? 'male' : 'female', 16) + esc(t(a.sex)) + '</span><span>' + icon('cake', 16) + ageText(a.age) + '</span><span>' + icon('kg', 16) + esc(a.weight) + 'kg</span>' + (neut ? '<span>' + icon('shield', 16) + (en ? 'Neutered' : '중성화') + '</span>' : '') + (vacc ? '<span>' + icon('shield', 16) + (en ? 'Vaccinated' : '접종') + '</span>' : '') + '</div>' +
+      action +
+      '<div class="box"><h3>' + t('건강') + '</h3><div class="muted">' + esc(a.health) + '</div></div>' +
+      '<div class="box"><h3>' + t('구조 배경') + '</h3><div class="muted" style="white-space:pre-wrap">' + esc(a.story) + '</div></div>' +
+      (a.status === '입양 완료' && a.review ? '<div class="box" style="background:var(--brand-soft);border-color:#dfe5cf"><h3>' + t('입양 후기') + '</h3><div style="white-space:pre-wrap">' + esc(a.review) + '</div></div>' : '') +
+      '<div class="box"><h3>' + t('상태 기록') + '</h3><ul class="timeline">' + a.history.slice().reverse().map(function(h){ return '<li><b>' + esc(h.date) + '</b>' + esc(h.text) + '</li>'; }).join('') + '</ul></div></div></div>' +
+      (others.length ? '<div class="sec-h"><h2>' + t('다른 친구들') + '</h2><button class="link-btn" type="button" data-page="adopt">' + (en ? 'See all ›' : '모두 보기 ›') + '</button></div><div class="hscroll" id="others">' + others.map(card).join('') + '</div>' : '');
     el.querySelectorAll('.thumbs button').forEach(function(b){ b.onclick = function(){ el.querySelectorAll('.thumbs button').forEach(function(x){ x.classList.remove('on'); }); b.classList.add('on'); document.getElementById('mainImg').src = b.dataset.src; }; });
-    var ap = document.getElementById('applyBtn'); if (ap) ap.onclick = function(){ toast('실제로는 신청 폼이 열리고, 신청 내용이 구글시트로 들어가요'); };
+    el.querySelectorAll('[data-apply]').forEach(function(b){ b.onclick = function(){ openApply(a, b.dataset.apply); }; });
+    var df = document.getElementById('dFav'); if (df) df.onclick = function(){ var list = favs(), k = list.indexOf(a.id); if (k >= 0) list.splice(k, 1); else list.push(a.id); setFavs(list); df.style.color = k < 0 ? 'var(--heart)' : 'inherit'; df.setAttribute('aria-pressed', String(k < 0)); toast(k < 0 ? '관심 친구로 저장했어요' : '관심 친구에서 뺐어요'); };
+    var ds = document.getElementById('dShare'); if (ds) ds.onclick = function(){ var u = location.href; if (navigator.share) navigator.share({title:a.name, url:u}).catch(function(){}); else if (navigator.clipboard) navigator.clipboard.writeText(u).then(function(){ toast('주소를 복사했어요'); }, function(){ toast(u); }); };
+    var o = document.getElementById('others'); if (o) bindCards(o);
+    markLoaded(el);
   }
 
+  // ---------- 신청 폼들 (실제로는 구글 시트로) ----------
+  function phoneFmt(el){ el.addEventListener('input', function(){ var d = el.value.replace(/\D/g, '').slice(0, 11); el.value = d.length < 4 ? d : d.length < 8 ? d.slice(0,3) + '-' + d.slice(3) : d.slice(0,3) + '-' + d.slice(3, d.length - 4) + '-' + d.slice(-4); }); }
+  ['aPhone','vPhone'].forEach(function(id){ phoneFmt(document.getElementById(id)); });
+  function handleForm(form, done){
+    form.onsubmit = function(e){
+      e.preventDefault();
+      var bad = [].slice.call(form.querySelectorAll('[required]')).filter(function(x){ return x.type === 'checkbox' ? !x.checked : !x.value.trim() || (x.type === 'email' && !x.checkValidity()); });
+      if (bad.length){ bad[0].focus(); toast(bad[0].type === 'checkbox' ? '수집·이용 동의에 체크해 주세요' : bad[0].type === 'email' && bad[0].value ? '이메일 주소를 확인해 주세요' : '빈칸을 채워 주세요'); return; }
+      form.reset(); done();
+    };
+  }
+  var applyModal = document.getElementById('applyModal');
+  function openApply(a, kind){ document.getElementById('applyTitle').textContent = a.name + ' ' + kind + ' 신청'; applyModal.hidden = false; setTimeout(function(){ document.getElementById('aName').focus(); }, 30); }
+  document.getElementById('applyCancel').onclick = function(){ applyModal.hidden = true; };
+  applyModal.onclick = function(e){ if (e.target === applyModal) applyModal.hidden = true; };
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape'){ applyModal.hidden = true; document.getElementById('sheet').hidden = true; } });
+  handleForm(document.getElementById('applyForm'), function(){ applyModal.hidden = true; toast('신청서를 받았어요. 담당자가 2~3일 안에 전화드려요 (실제로는 구글 시트로 들어가요)'); });
+  handleForm(document.getElementById('volForm'), function(){ toast('봉사 신청을 받았어요. 일정을 문자로 안내해 드려요 (예시)'); });
+  handleForm(document.getElementById('contactForm'), function(){ toast('문의를 받았어요. 이메일로 답변드려요 (예시)'); });
+
+  // 후원 탭
+  var DONATE = {reg:['매달 함께해 주세요', '매달 3만 원이면 구조견 한 마리의 한 달 사료와 기본 진료비가 돼요. (예시)'], once:['한 번의 후원도 큰 힘이 돼요', '긴급 구조와 수술비에 바로 쓰여요. (예시)']};
+  document.getElementById('donateTabs').onclick = function(e){
+    var b = e.target.closest('button'); if (!b) return;
+    this.querySelectorAll('button').forEach(function(x){ x.classList.toggle('on', x === b); });
+    var goods = b.dataset.t === 'goods';
+    document.getElementById('donateMoney').hidden = goods; document.getElementById('donateGoods').hidden = !goods;
+    if (!goods){ document.getElementById('dTitle').textContent = DONATE[b.dataset.t][0]; document.getElementById('dDesc').textContent = DONATE[b.dataset.t][1]; }
+  };
+  document.getElementById('amounts').onclick = function(e){ var b = e.target.closest('button'); if (!b) return; this.querySelectorAll('button').forEach(function(x){ x.classList.toggle('on', x === b); }); };
+  document.querySelectorAll('a[href="#"]').forEach(function(a){ if (!a.dataset.page) a.addEventListener('click', function(e){ e.preventDefault(); toast('실제 사이트에서는 단체의 결제·문서 페이지로 연결돼요'); }); });
+
   // ---------- 쉬운 관리자 ----------
+  var aStatus = '';
+  function buildAChips(){
+    document.getElementById('aChips').innerHTML = [['', '전체']].concat(STATUSES.map(function(s){ return [s, s]; })).concat([['hidden', '숨김'], ['draft', '임시저장']]).map(function(k){ return '<button type="button" data-v="' + k[0] + '" class="' + (aStatus === k[0] ? 'on' : '') + '">' + k[1] + '</button>'; }).join('');
+  }
+  document.getElementById('aChips').onclick = function(e){ var b = e.target.closest('button'); if (!b) return; aStatus = b.dataset.v; showAdminList(); };
+  document.getElementById('aq').oninput = function(){ showAdminList(); };
+  function relDay(d){ var n = Math.round((new Date(ymd(new Date())) - new Date(d)) / 864e5); return n <= 0 ? '오늘 수정' : n === 1 ? '어제 수정' : n + '일 전 수정'; }
+  function adminVisible(){ return current === 'admin' && !document.getElementById('adminList').hidden; }
   function showAdminList(){
     document.getElementById('adminList').hidden = false; document.getElementById('editForm').hidden = true;
-    document.getElementById('alist').innerHTML = db.animals.map(function(a){
-      var st = a.pending ? '<span class="pill pub">공개</span><span class="pill draft">고친 내용 임시저장</span>' : a.draft ? '<span class="pill draft">임시저장</span>' : a.vis === 'pub' ? '<span class="pill pub">공개</span>' : '<span class="pill hidden">숨김</span>';
-      return '<div class="arow"><img src="' + esc(safeUrl(a.photos[0])) + '" alt="" loading="lazy"><div><div class="nm">' + esc(a.name) + st + '</div><div class="small"><span class="badge ' + cls(a.status) + '" style="font-size:11px">' + esc(a.status) + '</span> · 마지막 변경 ' + esc(a.updated) + '</div></div><button class="btn sm ghost" type="button" data-edit="' + esc(a.id) + '">고치기</button></div>';
-    }).join('');
-    document.querySelectorAll('[data-edit]').forEach(function(b){ b.onclick = function(){ openEdit(b.dataset.edit); }; });
+    buildAChips();
+    var q = document.getElementById('aq').value.trim();
+    var list = db.animals.filter(function(a){
+      if (q && a.name.indexOf(q) < 0) return false;
+      if (aStatus === 'hidden') return a.vis !== 'pub' && !a.draft;
+      if (aStatus === 'draft') return a.draft || a.pending;
+      return !aStatus || a.status === aStatus;
+    });
+    document.getElementById('alist').innerHTML = list.length ? list.map(function(a){
+      var extra = a.syncing ? '<span class="pill sync">반영 중…</span>' : a.synced ? '<span class="pill done">반영 완료</span>' : a.pending ? '<span class="pill draft">고친 내용 임시저장</span>' : a.draft ? '<span class="pill draft">임시저장</span>' : '';
+      var visBtn = a.draft ? '<span></span>' : '<button type="button" class="vis ' + (a.vis === 'pub' ? 'on' : 'off') + '" data-vis="' + esc(a.id) + '" aria-pressed="' + (a.vis === 'pub') + '">' + icon(a.vis === 'pub' ? 'eye' : 'eyeoff', 16) + (a.vis === 'pub' ? '보임' : '숨김') + '</button>';
+      return '<div class="arow" data-edit="' + esc(a.id) + '" role="button" tabindex="0"><img src="' + esc(safeUrl(a.photos[0])) + '" alt="" loading="lazy"><div style="min-width:0"><div class="nm">' + esc(a.name) + extra + '</div><div class="sub"><span class="badge ' + cls(a.status) + '" style="font-size:12px;padding:2px 8px">' + esc(a.status) + '</span> ' + relDay(a.updated) + '</div></div>' + visBtn + '<span class="chev">' + icon('chev', 18) + '</span></div>';
+    }).join('') : '<div class="empty">해당하는 동물이 없어요</div>';
+    document.querySelectorAll('#alist [data-vis]').forEach(function(b){ b.onclick = function(e){ e.stopPropagation(); var a = db.animals.filter(function(x){ return x.id === b.dataset.vis; })[0]; var snap = JSON.stringify(db); a.vis = a.vis === 'pub' ? 'hidden' : 'pub'; a.history.push({date:ymd(new Date()), text:a.vis === 'pub' ? '공개로 바꿈' : '숨김으로 바꿈'}); a.updated = ymd(new Date()); if (!save()){ db = JSON.parse(snap); toast('저장하지 못했어요'); showAdminList(); return; } lastEdited = a.id; toast(a.vis === 'pub' ? a.name + '를 홈페이지에 보이게 했어요' : a.name + '를 숨겼어요. 주소를 알아도 볼 수 없어요'); markSync(a.id); }; });
+    document.querySelectorAll('#alist [data-edit]').forEach(function(r){ r.onclick = function(){ openEdit(r.dataset.edit); }; r.onkeydown = function(e){ if (e.key === 'Enter') openEdit(r.dataset.edit); }; });
   }
-  var editing = null, ePhotos = [], eStatus = '입양 가능', eVis = 'pub';
-  var stBox = document.getElementById('eStatus');
-  stBox.innerHTML = STATUSES.map(function(s){ return '<button type="button" data-s="' + s + '">' + s + '</button>'; }).join('');
-  stBox.onclick = function(e){ var b = e.target.closest('[data-s]'); if (!b) return; eStatus = b.dataset.s; paintToggles(); };
-  document.getElementById('eVis').onclick = function(e){ var b = e.target.closest('[data-v]'); if (!b) return; eVis = b.dataset.v; paintToggles(); };
-  function paintToggles(){
-    stBox.querySelectorAll('button').forEach(function(b){ b.classList.toggle('on', b.dataset.s === eStatus); });
-    document.querySelectorAll('#eVis button').forEach(function(b){ b.classList.toggle('on', b.dataset.v === eVis); });
+  function markSync(id){
+    var a = db.animals.filter(function(x){ return x.id === id; })[0]; if (!a) return;
+    a.syncing = true; a.synced = false; showAdminList();
+    setTimeout(function(){ a.syncing = false; a.synced = true; if (adminVisible()) showAdminList(); setTimeout(function(){ a.synced = false; if (adminVisible()) showAdminList(); }, 4000); }, 2500);
+  }
+  var editing = null, ePhotos = [], eStatus = '입양 가능', eVis = 'pub', eKind = '개', eSex = '수컷';
+  document.getElementById('eStatus').innerHTML = STATUSES.map(function(s){ return '<button type="button" data-v="' + s + '">' + s + '</button>'; }).join('');
+  var yrs = document.getElementById('eYears'), mos = document.getElementById('eMonths');
+  yrs.innerHTML = '<option value="">나이 모름</option>' + Array.from({length:21}, function(_, i){ return '<option value="' + i + '">' + i + '살</option>'; }).join('');
+  mos.innerHTML = Array.from({length:12}, function(_, i){ return '<option value="' + i + '">' + i + '개월</option>'; }).join('');
+  function bindToggle(id, set){ document.getElementById(id).onclick = function(e){ var b = e.target.closest('[data-v]'); if (!b) return; set(b.dataset.v); paint(); }; }
+  bindToggle('eStatus', function(v){ eStatus = v; }); bindToggle('eVis', function(v){ eVis = v; }); bindToggle('eKind', function(v){ eKind = v; }); bindToggle('eSex', function(v){ eSex = v; });
+  function paint(){
+    [['eStatus', eStatus], ['eVis', eVis], ['eKind', eKind], ['eSex', eSex]].forEach(function(p){ document.querySelectorAll('#' + p[0] + ' [data-v]').forEach(function(b){ b.classList.toggle('on', b.dataset.v === p[1]); }); });
     document.getElementById('reviewField').hidden = eStatus !== '입양 완료';
   }
   function openEdit(id){
     editing = id ? db.animals.filter(function(a){ return a.id === id; })[0] : null;
-    var a = (editing && editing.pending) ? Object.assign({}, editing, editing.pending) : editing || {name:'', kind:'개', sex:'수컷', age:'', weight:'', health:'', story:'', video:'', review:'', status:'입양 가능', vis:'pub', photos:[]};
+    var a = (editing && editing.pending) ? Object.assign({}, editing, editing.pending) : editing || {name:'', kind:'개', sex:'수컷', age:'', weight:'', health:'', story:'', traits:'', video:'', review:'', status:'입양 가능', vis:'pub', photos:[]};
     document.getElementById('editTitle').textContent = editing ? a.name + ' 고치기' : '새 동물 등록';
-    document.getElementById('eName').value = a.name; document.getElementById('eKind').value = a.kind; document.getElementById('eSex').value = a.sex;
-    document.getElementById('eAge').value = a.age; document.getElementById('eWeight').value = a.weight; document.getElementById('eHealth').value = a.health;
-    document.getElementById('eStory').value = a.story; document.getElementById('eVideo').value = a.video; document.getElementById('eReview').value = a.review;
-    eStatus = a.status; eVis = a.vis; ePhotos = a.photos.map(function(p){ return {src:p}; });
-    paintToggles(); paintPhotos();
+    document.getElementById('eName').value = a.name; document.getElementById('eWeight').value = a.weight || '';
+    document.getElementById('eHealth').value = a.health; document.getElementById('eStory').value = a.story; document.getElementById('eTraits').value = a.traits || '';
+    document.getElementById('eVideo').value = a.video; document.getElementById('eReview').value = a.review;
+    yrs.value = a.age === '' ? '' : String(Math.min(20, Math.floor(a.age / 12))); mos.value = a.age === '' ? '0' : String(a.age % 12);
+    eStatus = a.status; eVis = a.vis; eKind = a.kind; eSex = a.sex; ePhotos = a.photos.map(function(p){ return {src:p}; });
+    paint(); paintPhotos();
     document.getElementById('adminList').hidden = true; document.getElementById('editForm').hidden = false; window.scrollTo(0, 0);
   }
   document.getElementById('newAnimal').onclick = function(){ openEdit(null); };
   document.getElementById('cancelEdit').onclick = showAdminList;
-  document.getElementById('toSite').onclick = function(){ go('adopt'); };
+  document.getElementById('toSite').onclick = function(){ var a = lastEdited && db.animals.filter(function(x){ return x.id === lastEdited; })[0]; if (a && visible(a)) go('detail', a.id); else go('adopt'); };
 
   function kb(n){ return n > 1048576 ? (n / 1048576).toFixed(1) + 'MB' : Math.round(n / 1024) + 'KB'; }
   function paintPhotos(){
@@ -580,25 +954,22 @@ header.site{background:rgba(243,242,236,.92)}
   }
   var drop = document.getElementById('drop');
   document.getElementById('file').onchange = function(e){ addFiles(e.target.files); e.target.value = ''; };
-  ['dragenter','dragover'].forEach(function(t){ drop.addEventListener(t, function(e){ e.preventDefault(); drop.classList.add('over'); }); });
-  ['dragleave','drop'].forEach(function(t){ drop.addEventListener(t, function(e){ e.preventDefault(); drop.classList.remove('over'); }); });
+  ['dragenter','dragover'].forEach(function(tp){ drop.addEventListener(tp, function(e){ e.preventDefault(); drop.classList.add('over'); }); });
+  ['dragleave','drop'].forEach(function(tp){ drop.addEventListener(tp, function(e){ e.preventDefault(); drop.classList.remove('over'); }); });
   drop.addEventListener('drop', function(e){ addFiles(e.dataTransfer.files); });
-  ['dragover','drop'].forEach(function(t){ document.addEventListener(t, function(e){ e.preventDefault(); }); });
+  ['dragover','drop'].forEach(function(tp){ document.addEventListener(tp, function(e){ e.preventDefault(); }); });
 
   function collect(){
-    return {name:document.getElementById('eName').value.trim(), kind:document.getElementById('eKind').value, sex:document.getElementById('eSex').value, age:+document.getElementById('eAge').value || 0, weight:+document.getElementById('eWeight').value || 0, health:document.getElementById('eHealth').value.trim(), story:document.getElementById('eStory').value.trim(), video:document.getElementById('eVideo').value.trim(), review:document.getElementById('eReview').value.trim(), status:eStatus, vis:eVis, photos:ePhotos.map(function(p){ return p.src; })};
+    var y = yrs.value, m = +mos.value || 0, w = document.getElementById('eWeight').value;
+    return {name:document.getElementById('eName').value.trim(), kind:eKind, sex:eSex, age:y === '' ? '' : (+y) * 12 + m, weight:w === '' ? 0 : Math.max(0, Math.min(99, +w)), health:document.getElementById('eHealth').value.trim(), traits:document.getElementById('eTraits').value.trim(), story:document.getElementById('eStory').value.trim(), video:document.getElementById('eVideo').value.trim(), review:document.getElementById('eReview').value.trim(), status:eStatus, vis:eVis, photos:ePhotos.map(function(p){ return p.src; })};
   }
   function persist(draft){
     var d = collect(), today = ymd(new Date());
     if (!d.name){ toast('이름을 적어 주세요'); document.getElementById('eName').focus(); return; }
-    var ageRaw = document.getElementById('eAge').value, wRaw = document.getElementById('eWeight').value;
-    d.age = ageRaw === '' ? '' : Math.max(0, Math.min(300, Math.round(+ageRaw)));
-    d.weight = wRaw === '' ? 0 : Math.max(0, Math.min(99, +wRaw));
     if (!draft && !d.photos.length){ toast('사진을 한 장 이상 올려 주세요 (임시저장은 사진 없이도 돼요)'); return; }
-    var snap = JSON.stringify(db), a = editing;
-    if (draft && a && !a.draft){
-      a.pending = d;
-    } else {
+    var snap = JSON.stringify(db), editId = editing && editing.id, a = editing;
+    if (draft && a && !a.draft){ a.pending = d; }
+    else {
       if (!a){ a = {id:'a' + Date.now(), history:[]}; db.animals.unshift(a); }
       if (!draft){
         if (!a.history.length) a.history.push({date:today, text:'등록'});
@@ -607,13 +978,20 @@ header.site{background:rgba(243,242,236,.92)}
       }
       Object.assign(a, d, {draft:!!draft, updated:today}); delete a.pending;
     }
-    if (!save()){ db = JSON.parse(snap); toast('데모 저장 공간이 꽉 찼어요. 사진 수를 줄여 주세요 (실제 서비스는 서버에 저장해요)'); return; }
-    toast(draft ? (a.pending ? '임시저장했어요. 홈페이지에는 이전 내용이 그대로 보여요' : '임시저장했어요. 홈페이지에는 아직 안 보여요') : (d.vis === 'pub' ? '저장했어요. 몇 분 안에 홈페이지에 반영돼요' : '저장했어요. 숨김이라 홈페이지에는 안 보여요'));
+    if (!save()){
+      db = JSON.parse(snap);
+      editing = editId ? db.animals.filter(function(x){ return x.id === editId; })[0] || null : null;
+      toast('데모 저장 공간이 꽉 찼어요. 사진 수를 줄여 주세요 (실제 서비스는 서버에 저장해요)'); return;
+    }
+    lastEdited = a.id;
+    toast(draft ? (a.pending ? '임시저장했어요. 홈페이지에는 이전 내용이 그대로 보여요' : '임시저장했어요. 홈페이지에는 아직 안 보여요') : (d.vis === 'pub' ? '저장했어요. 5분쯤 뒤 홈페이지에 나와요' : '저장했어요. 숨김이라 홈페이지에는 안 보여요'));
     showAdminList();
+    if (!draft) markSync(a.id);
   }
   document.getElementById('saveDraft').onclick = function(){ persist(true); };
   document.getElementById('editForm').onsubmit = function(e){ e.preventDefault(); persist(false); };
 
+  buildChips();
   route();
 })();
 </script>
