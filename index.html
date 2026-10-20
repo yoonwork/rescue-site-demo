@@ -152,6 +152,70 @@ h2{font-size:21px;margin:0 0 14px;letter-spacing:-.02em}
   .arch{grid-template-columns:1fr 1fr}
   .demobar .msg{display:none}
 }
+
+/* ===== 리디자인: 차분한 미색 + 올리브 포인트, 둥근 카드, 칩 필터, 휴대폰 아래 탭 ===== */
+:root{--bg:#f3f2ec;--card:#fff;--ink:#1c1f17;--ink-2:#5b5f55;--ink-3:#8f9388;--line:#e8e6de;--brand:#3d4b2a;--brand-2:#2c3820;--lime:#d6e35a;--green:#3d6b2a;--green-bg:#e9f0dc}
+body{background:var(--bg)}
+header.site{background:rgba(243,242,236,.92)}
+.logo i{background:var(--brand)}
+.btn{background:var(--brand);border-radius:999px}
+.btn:hover{background:var(--brand-2)}
+.btn.lime{background:var(--lime);color:#1c1f17}
+.btn.lime:hover{background:#c8d64a}
+.btn.ghost{border-radius:999px}
+.menu button.on{box-shadow:inset 0 -2px 0 var(--brand)}
+.news,.acard,.box,.arow,.edit{border-radius:20px;border-color:var(--line);box-shadow:0 1px 2px rgba(28,31,23,.04)}
+.acard .im{border-radius:16px;margin:8px 8px 0;overflow:hidden}
+.acard .im .badge{left:8px;top:8px;background:rgba(255,255,255,.92);color:var(--ink);font-size:11px}
+.acard .im .badge::before{content:"";width:6px;height:6px;border-radius:50%;margin-right:5px;background:var(--dot,#3d6b2a)}
+.acard .im .badge.b-rev{--dot:#c48a00}.acard .im .badge.b-done{--dot:#8f9388}.acard .im .badge.b-foster{--dot:#2b6cb0}
+.news .im{margin:8px 8px 0;border-radius:14px;overflow:hidden}
+.home-top{display:grid;gap:14px;padding-top:18px}
+.greet{display:flex;align-items:center;gap:12px}
+.greet .av{width:42px;height:42px;border-radius:50%;background:var(--lime);color:#fff;display:grid;place-items:center;font-size:20px;flex:none}
+.greet b{display:block;font-size:16px}
+.greet span{font-size:13px;color:var(--ink-3)}
+.search{display:flex;gap:8px}
+.search input{flex:1;min-width:0;border:1px solid var(--line);background:#fff;border-radius:14px;padding:13px 14px;font-size:15px}
+.search button{width:48px;border:0;border-radius:14px;background:var(--brand);color:#fff;display:grid;place-items:center}
+.banner{position:relative;border-radius:22px;overflow:hidden;color:#fff;padding:26px 24px;min-height:220px;display:flex;flex-direction:column;justify-content:flex-end;background:#2b2f25}
+.banner img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55}
+.banner::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(20,24,16,.85),rgba(20,24,16,.2))}
+.banner>*{position:relative;z-index:1;max-width:520px}
+.banner h1{color:#fff;font-size:clamp(24px,3.6vw,36px)}
+.banner p{color:#e7e9e0;margin:0 0 14px}
+.quick{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.quick button{border:1px solid var(--line);background:#fff;border-radius:18px;padding:14px 8px;font-weight:700;font-size:13.5px;display:flex;flex-direction:column;align-items:center;gap:6px}
+.quick button i{font-style:normal;width:40px;height:40px;border-radius:12px;background:var(--bg);display:grid;place-items:center;font-size:20px}
+.stats{margin:2px 0 0}
+.stats b{color:var(--brand)}
+.sec-h{display:flex;align-items:baseline;justify-content:space-between;margin:26px 0 12px}
+.sec-h h2{margin:0}
+.sec-h button{border:0;background:none;font-weight:700;font-size:13px;color:var(--ink-2)}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:2px 0 4px;margin-bottom:10px;scrollbar-width:none}
+.chips button{flex:none;border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 14px;font-size:13.5px;font-weight:600;min-height:38px}
+.chips button.on{background:var(--brand);color:#fff;border-color:var(--brand)}
+.more-f{border:0;background:none;font-weight:700;font-size:13px;color:var(--ink-2);padding:4px 0;margin-bottom:8px}
+.filters{grid-template-columns:2fr 1fr 1fr 1fr}
+.filters select,.filters input{border-radius:12px}
+.filters .hidden-sel{display:none}
+.tabbar{display:none}
+.float button.p{background:var(--brand)}
+@media (max-width:860px){
+  .demobar{position:relative;padding-bottom:8px}
+  body{padding-bottom:calc(74px + env(safe-area-inset-bottom))}
+  .menu{display:none!important}
+  .float{display:none}
+  .tabbar{display:grid;grid-template-columns:repeat(4,1fr);position:fixed;left:0;right:0;bottom:0;z-index:55;background:#fff;border-top:1px solid var(--line);padding:6px 0 calc(6px + env(safe-area-inset-bottom))}
+  .tabbar button{border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11.5px;font-weight:600;color:var(--ink-3);padding:4px 0;min-height:48px}
+  .tabbar button i{font-style:normal;font-size:20px;line-height:1;filter:grayscale(1);opacity:.7}
+  .tabbar button.on{color:var(--brand)}
+  .tabbar button.on i{filter:none;opacity:1}
+  .filters{grid-template-columns:1fr 1fr}
+  .banner{min-height:200px;padding:22px 18px}
+  .toast{bottom:calc(90px + env(safe-area-inset-bottom))}
+  .savebar{bottom:calc(70px + env(safe-area-inset-bottom))}
+}
 </style>
 </head>
 <body>
@@ -179,19 +243,17 @@ h2{font-size:21px;margin:0 0 14px;letter-spacing:-.02em}
 
   <!-- 메인 -->
   <section class="page" id="p-home">
-    <div class="hero">
-      <div>
-        <h1 data-i18n="heroT">구조부터 입양까지,<br>끝까지 책임집니다</h1>
-        <p class="muted" data-i18n="heroS">위기에 놓인 동물을 구조하고, 치료하고, 평생 가족을 찾아 줍니다.</p>
-        <div class="stats"><div><b>1,284</b><span class="small" data-i18n="s1">구조한 동물</span></div><div><b>963</b><span class="small" data-i18n="s2">입양 간 가족</span></div><div><b>412</b><span class="small" data-i18n="s3">정기 후원자</span></div></div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn big" data-page="donate" type="button" data-i18n="cta1">정기후원 하기</button><button class="btn big ghost" data-page="adopt" type="button" data-i18n="cta2">입양 기다리는 친구들</button></div>
-      </div>
-      <div class="photo"><img src="https://placedog.net/900/675?id=21" alt="구조된 강아지 (예시 사진)" loading="eager"></div>
+    <div class="wrap home-top">
+      <div class="greet"><span class="av">🐾</span><div><b>안녕하세요 👋</b><span>오늘도 함께해 주셔서 고마워요</span></div></div>
+      <form class="search" id="homeSearch" role="search"><input id="homeQ" type="search" placeholder="이름으로 친구 찾기 (예: 보리)" aria-label="이름으로 찾기"><button type="submit" aria-label="찾기"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></button></form>
+      <div class="banner"><img src="https://placedog.net/1200/700?id=21" alt="" loading="eager"><h1 data-i18n="heroT">구조부터 입양까지,<br>끝까지 책임집니다</h1><p data-i18n="heroS">위기에 놓인 동물을 구조하고, 치료하고, 평생 가족을 찾아 줍니다.</p><div><button class="btn lime" data-page="donate" type="button" data-i18n="cta1">정기후원 하기</button></div></div>
+      <div class="quick"><button type="button" data-page="adopt"><i>🐶</i><span data-i18n="cta2">입양하기</span></button><button type="button" data-page="donate"><i>💛</i><span>후원하기</span></button><button type="button" data-page="volunteer"><i>🤝</i><span>봉사 신청</span></button></div>
+      <div class="stats"><div><b>1,284</b><span class="small" data-i18n="s1">구조한 동물</span></div><div><b>963</b><span class="small" data-i18n="s2">입양 간 가족</span></div><div><b>412</b><span class="small" data-i18n="s3">정기 후원자</span></div></div>
     </div>
-    <div class="wrap">
-      <h2 data-i18n="newsT">최신 구조 소식</h2>
+    <div class="wrap" style="padding-top:0">
+      <div class="sec-h"><h2 data-i18n="newsT">최신 구조 소식</h2><button type="button" data-page="activity">모두 보기 ›</button></div>
       <div class="cards" id="newsCards"></div>
-      <h2 style="margin-top:30px" data-i18n="waitT">가족을 기다리고 있어요</h2>
+      <div class="sec-h"><h2 data-i18n="waitT">가족을 기다리고 있어요</h2><button type="button" data-page="adopt">모두 보기 ›</button></div>
       <div class="cards" id="homeAnimals"></div>
     </div>
   </section>
@@ -200,13 +262,16 @@ h2{font-size:21px;margin:0 0 14px;letter-spacing:-.02em}
   <section class="page wrap" id="p-adopt" hidden>
     <h1 data-i18n="m3">입양&amp;임시보호</h1>
     <p class="muted">이름이나 조건으로 찾아보세요. 사진은 화면에 보일 때 불러와서 빨라요.</p>
-    <div class="filters">
+    <div class="chips" data-sel="fKind"><button type="button" data-v="" class="on">전체</button><button type="button" data-v="개">🐶 강아지</button><button type="button" data-v="고양이">🐱 고양이</button></div>
+    <div class="chips" data-sel="fStatus"><button type="button" data-v="" class="on">모든 상태</button><button type="button" data-v="입양 가능">입양 가능</button><button type="button" data-v="임시보호 중">임시보호 중</button><button type="button" data-v="입양 심사 중">심사 중</button><button type="button" data-v="입양 완료">입양 완료</button></div>
+    <button class="more-f" id="moreF" type="button" aria-expanded="false">상세 조건 (이름·성별·나이·체중) ▾</button>
+    <div class="filters" id="moreBox" hidden>
       <input id="q" type="search" placeholder="이름으로 찾기">
-      <select id="fKind"><option value="">동물 전체</option><option>개</option><option>고양이</option></select>
+      <select id="fKind" class="hidden-sel"><option value="">동물 전체</option><option>개</option><option>고양이</option></select>
       <select id="fSex"><option value="">성별 전체</option><option>수컷</option><option>암컷</option></select>
       <select id="fAge"><option value="">연령 전체</option><option value="0-12">1살 미만</option><option value="12-84">1~7살</option><option value="84-999">7살 이상</option></select>
       <select id="fWeight"><option value="">체중 전체</option><option value="0-5">5kg 미만</option><option value="5-15">5~15kg</option><option value="15-99">15kg 이상</option></select>
-      <select id="fStatus"><option value="">입양 상태 전체</option><option>입양 가능</option><option>임시보호 중</option><option>입양 심사 중</option><option>입양 완료</option></select>
+      <select id="fStatus" class="hidden-sel"><option value="">입양 상태 전체</option><option>입양 가능</option><option>임시보호 중</option><option>입양 심사 중</option><option>입양 완료</option></select>
     </div>
     <div class="cards" id="list"></div>
   </section>
@@ -220,6 +285,7 @@ h2{font-size:21px;margin:0 0 14px;letter-spacing:-.02em}
     <div class="empty">이 메뉴는 공고의 화면설계서에 맞춰 만들어요. 데모에서는 '입양&amp;임시보호'와 '쉬운 관리자'를 먼저 보여 드려요.</div>
   </section>
 
+  <nav class="tabbar" aria-label="아래 메뉴"><button type="button" data-page="home"><i>🏠</i>홈</button><button type="button" data-page="adopt"><i>🐾</i>입양</button><button type="button" data-page="donate"><i>💛</i>후원</button><button type="button" data-page="contact"><i>💬</i>문의</button></nav>
   <div class="float"><button class="p" data-page="adopt" type="button">입양</button><button data-page="donate" type="button">후원</button><button data-page="contact" type="button">문의</button></div>
 </div>
 
@@ -321,7 +387,7 @@ h2{font-size:21px;margin:0 0 14px;letter-spacing:-.02em}
   function save(){ try { localStorage.setItem(KEY, JSON.stringify(db)); return true; } catch(e){ return false; } }
 
   // ---------- 영문 전환 (용어집 방식 예시) ----------
-  var EN = {org:'○○ Animal Rescue (sample)', m1:'About', m2:'Activities', m3:'Adopt & Foster', m4:'Volunteer', m5:'Donate', m6:'News & Contact', heroT:'From rescue to adoption,<br>we stay till the end', heroS:'We rescue animals in danger, treat them, and find them families for life.', s1:'animals rescued', s2:'adopted', s3:'monthly donors', cta1:'Donate monthly', cta2:'Meet our animals', newsT:'Latest rescues', waitT:'Waiting for a family'};
+  var EN = {org:'○○ Animal Rescue (sample)', m1:'About', m2:'Activities', m3:'Adopt & Foster', m4:'Volunteer', m5:'Donate', m6:'News & Contact', heroT:'From rescue to adoption,<br>we stay till the end', heroS:'We rescue animals in danger, treat them, and find them families for life.', s1:'animals rescued', s2:'adopted', s3:'monthly donors', cta1:'Donate monthly', cta2:'Adopt', newsT:'Latest rescues', waitT:'Waiting for a family'};
   var KO = {};
   document.querySelectorAll('[data-i18n]').forEach(function(el){ KO[el.dataset.i18n] = KO[el.dataset.i18n] || el.innerHTML; });
   var en = false;
@@ -340,8 +406,9 @@ h2{font-size:21px;margin:0 0 14px;letter-spacing:-.02em}
     if (site.indexOf(p) >= 0){
       var page = ['home','adopt','detail'].indexOf(p) >= 0 ? p : 'other';
       document.querySelectorAll('#site .page').forEach(function(s){ s.hidden = s.id !== 'p-' + page; });
-      document.querySelectorAll('.menu [data-page]').forEach(function(b){ b.classList.toggle('on', b.dataset.page === p || (p === 'detail' && b.dataset.page === 'adopt')); });
+      document.querySelectorAll('.menu [data-page], .tabbar [data-page]').forEach(function(b){ b.classList.toggle('on', b.dataset.page === p || (p === 'detail' && b.dataset.page === 'adopt')); });
       if (page === 'other') document.getElementById('otherT').textContent = document.querySelector('.menu [data-page="' + p + '"]').textContent;
+      document.querySelector('.tabbar').hidden = false;
       if (p === 'home') renderHome();
       if (p === 'adopt') renderList();
       if (p === 'detail') renderDetail(id);
@@ -374,6 +441,11 @@ h2{font-size:21px;margin:0 0 14px;letter-spacing:-.02em}
 
   var F = ['q','fKind','fSex','fAge','fWeight','fStatus'].map(function(id){ return document.getElementById(id); });
   F.forEach(function(el){ el.addEventListener('input', renderList); el.addEventListener('change', renderList); });
+  document.querySelectorAll('.chips').forEach(function(box){
+    box.addEventListener('click', function(e){ var b = e.target.closest('button'); if (!b) return; box.querySelectorAll('button').forEach(function(x){ x.classList.toggle('on', x === b); }); var sel = document.getElementById(box.dataset.sel); sel.value = b.dataset.v; sel.dispatchEvent(new Event('change')); });
+  });
+  document.getElementById('moreF').onclick = function(){ var bx = document.getElementById('moreBox'); bx.hidden = !bx.hidden; this.setAttribute('aria-expanded', String(!bx.hidden)); this.textContent = bx.hidden ? '상세 조건 (이름·성별·나이·체중) ▾' : '상세 조건 접기 ▴'; };
+  document.getElementById('homeSearch').onsubmit = function(e){ e.preventDefault(); var v = document.getElementById('homeQ').value.trim(); document.getElementById('q').value = v; if (v){ var bx = document.getElementById('moreBox'), mb = document.getElementById('moreF'); bx.hidden = false; mb.setAttribute('aria-expanded', 'true'); mb.textContent = '상세 조건 접기 ▴'; } renderList(); go('adopt'); };
   function inRange(v, r){ if (!r) return true; if (v === '' || v == null) return false; var p = r.split('-'), hi = +p[1] >= 99 ? Infinity : +p[1]; return +v >= +p[0] && +v < hi; }
   function renderList(){
     var q = F[0].value.trim();
