@@ -295,6 +295,7 @@ footer.site a{text-decoration:underline;text-underline-offset:3px}
   .tabbar{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:55;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px;box-shadow:0 8px 24px rgba(28,31,23,.12)}
   .tabbar button{border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;font-weight:600;color:var(--ink-3);border-radius:999px;min-height:52px;padding:4px 0}
   .tabbar button.on{background:var(--brand-soft);color:var(--brand);font-weight:800}
+  .tabbar button svg{width:24px;height:24px}
   .cards{grid-template-columns:1fr 1fr;gap:10px}
   .acard .bd{padding:10px 12px 12px}
   .acard .nm{font-size:16px}
@@ -334,12 +335,12 @@ footer.site a{text-decoration:underline;text-underline-offset:3px}
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
-    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 9.5V20a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V9.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
-    <symbol id="i-paw" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="6" cy="10" r="1.8"/><circle cx="10" cy="6" r="1.8"/><circle cx="14" cy="6" r="1.8"/><circle cx="18" cy="10" r="1.8"/><path d="M12 12c-3 0-5.5 3.2-5.5 5.4 0 1.6 1.3 2.6 2.9 2.6 1 0 1.7-.5 2.6-.5s1.6.5 2.6.5c1.6 0 2.9-1 2.9-2.6C17.5 15.2 15 12 12 12z"/></g></symbol>
-    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></symbol>
-    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M6 5h12a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H9l-5 4V7a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
-    <symbol id="i-hand" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 11V6.5a1.5 1.5 0 0 1 3 0V11"/><path d="M10 10V5a1.5 1.5 0 0 1 3 0v5"/><path d="M13 10V6a1.5 1.5 0 0 1 3 0v6"/><path d="M16 11.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6h-1a6 6 0 0 1-5-2.7L4.6 14.6a1.5 1.5 0 0 1 2.4-1.8L7 13"/></g></symbol>
-    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 10.6c0-.6.3-1.2.8-1.6l5.9-4.6a2.1 2.1 0 0 1 2.6 0l5.9 4.6c.5.4.8 1 .8 1.6V18a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 18z" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M9.5 20.5v-4a2.5 2.5 0 0 1 5 0v4" fill="none" stroke="currentColor" stroke-width="1.9"/></symbol>
+    <symbol id="i-paw" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.9"><ellipse cx="5.8" cy="10.4" rx="1.9" ry="2.3"/><ellipse cx="9.6" cy="5.9" rx="2" ry="2.5"/><ellipse cx="14.4" cy="5.9" rx="2" ry="2.5"/><ellipse cx="18.2" cy="10.4" rx="1.9" ry="2.3"/><path d="M12 11.8c-2.9 0-5.6 3.3-5.6 5.6 0 1.8 1.4 2.8 3 2.8 1.1 0 1.7-.5 2.6-.5s1.5.5 2.6.5c1.6 0 3-1 3-2.8 0-2.3-2.7-5.6-5.6-5.6z"/></g></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20.2c-.3 0-.6-.1-.9-.3C8.4 18 4 14.6 4 9.9 4 7.2 6 5 8.6 5c1.4 0 2.6.7 3.4 1.8C12.8 5.7 14 5 15.4 5 18 5 20 7.2 20 9.9c0 4.7-4.4 8.1-7.1 10-.3.2-.6.3-.9.3z" stroke="currentColor" stroke-width="1.9"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M12 4c4.7 0 8.5 3.1 8.5 7s-3.8 7-8.5 7c-.9 0-1.8-.1-2.6-.3L5.3 19.6c-.4.2-.9-.2-.7-.7l.9-2.9C4.3 14.7 3.5 13 3.5 11c0-3.9 3.8-7 8.5-7z" fill="none" stroke="currentColor" stroke-width="1.9"/></symbol>
+    <symbol id="i-hand" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.9"><path d="M8 11.5V7a1.6 1.6 0 0 1 3.2 0v4"/><path d="M11.2 10.5V5.6a1.6 1.6 0 0 1 3.2 0v5"/><path d="M14.4 10.8V7.4a1.6 1.6 0 0 1 3.2 0v5.8"/><path d="M17.6 12.4a1.6 1.6 0 0 1 2.4 1.4V15a6 6 0 0 1-6 6h-1.2a6 6 0 0 1-4.9-2.5l-2.8-3.9a1.6 1.6 0 0 1 2.4-2l1 1"/></g></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.9"><rect x="4" y="4" width="6.5" height="6.5" rx="3.25"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="3.25"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="3.25"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="3.25"/></g></symbol>
     <symbol id="i-search" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></g></symbol>
     <symbol id="i-male" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="10" cy="14" r="5"/><path d="M14 10l6-6M15 4h5v5"/></g></symbol>
     <symbol id="i-female" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="9" r="5"/><path d="M12 14v7M9 18h6"/></g></symbol>
