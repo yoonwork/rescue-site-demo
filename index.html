@@ -217,6 +217,27 @@ header.site{background:rgba(243,242,236,.92)}
   .toast{bottom:calc(90px + env(safe-area-inset-bottom))}
   .savebar{bottom:calc(70px + env(safe-area-inset-bottom))}
 }
+
+/* 레퍼런스③: 떠 있는 알약 탭, 카드 ♡, 아이콘 정보 줄 */
+.acard{cursor:pointer}
+.acard:focus-visible{outline:3px solid var(--lime);outline-offset:2px}
+.fav{position:absolute;right:8px;top:8px;width:34px;height:34px;border-radius:50%;border:0;background:rgba(255,255,255,.92);display:grid;place-items:center;color:var(--ink-2);fill:none}
+.fav.on{color:#e0533c;fill:#e0533c}
+.fav.on svg{fill:#e0533c}
+.acard .nm .kind{font-size:12px;font-weight:600;color:var(--ink-3)}
+.acard .meta{display:flex;flex-wrap:wrap;gap:4px 10px;margin-top:4px}
+.acard .meta span{display:inline-flex;align-items:center;gap:4px;white-space:nowrap}
+.acard .meta svg{color:var(--ink-3)}
+@media (max-width:860px){
+  .tabbar{left:14px;right:14px;bottom:calc(12px + env(safe-area-inset-bottom));border-radius:999px;background:var(--brand);border:0;padding:6px;box-shadow:0 10px 30px rgba(28,31,23,.25)}
+  .tabbar button{color:rgba(255,255,255,.65);border-radius:999px;min-height:52px;font-size:11px}
+  .tabbar button i{color:inherit}
+  .tabbar button.on{background:var(--lime);color:var(--brand)}
+  .tabbar button.on i{color:var(--brand)}
+  body{padding-bottom:calc(96px + env(safe-area-inset-bottom))}
+  .toast{bottom:calc(100px + env(safe-area-inset-bottom))}
+  .savebar{bottom:calc(84px + env(safe-area-inset-bottom))}
+}
 </style>
 </head>
 <body>
@@ -426,13 +447,32 @@ header.site{background:rgba(243,242,236,.92)}
 
   function visible(a){ return a.vis === 'pub' && !a.draft; }
   function cls(s){ return SCLS[s] || 'b-ok'; }
+  var FAVK = 'rescue-fav';
+  function favs(){ try { return JSON.parse(localStorage.getItem(FAVK)) || []; } catch(e){ return []; } }
+  function setFavs(f){ try { localStorage.setItem(FAVK, JSON.stringify(f)); } catch(e){} }
+  var IC = {
+    age:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 21h16v-8H4z"/><path d="M4 16c2 1.5 4 1.5 6 0s4-1.5 6 0 4 1.5 4 0"/><path d="M12 13V9"/><path d="M12 6.5c.8-.8.8-2 0-3-.8 1-.8 2.2 0 3z"/></svg>',
+    kg:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M8.5 10a3.5 3.5 0 0 1 7 0"/><path d="M12 10l1.5-2"/></svg>',
+    heart:'<svg width="18" height="18" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>'
+  };
   function card(a){
-    var img = safeUrl(a.photos[0]);
-    return '<button class="acard" type="button" data-animal="' + esc(a.id) + '"><div class="im"><img loading="lazy" alt="' + esc(a.name) + '" src="' + esc(img) + '"><span class="badge ' + cls(a.status) + '">' + esc(a.status) + '</span>' + (a.status === '입양 완료' ? '<div class="done-ribbon">입양 완료 ♥</div>' : '') + '</div>' +
-      '<div class="bd"><div class="nm">' + esc(a.name) + '</div><div class="meta">' + esc(a.kind) + ' · ' + esc(a.sex) + ' · ' + ageText(a.age) + ' · ' + esc(a.weight) + 'kg</div></div></button>';
+    var img = safeUrl(a.photos[0]), fav = favs().indexOf(a.id) >= 0;
+    return '<div class="acard" role="link" tabindex="0" data-animal="' + esc(a.id) + '"><div class="im"><img loading="lazy" alt="' + esc(a.name) + '" src="' + esc(img) + '"><span class="badge ' + cls(a.status) + '">' + esc(a.status) + '</span>' +
+      '<button type="button" class="fav' + (fav ? ' on' : '') + '" data-fav="' + esc(a.id) + '" aria-pressed="' + fav + '" aria-label="' + esc(a.name) + ' 관심 친구로 저장">' + IC.heart + '</button>' +
+      (a.status === '입양 완료' ? '<div class="done-ribbon">입양 완료 ♥</div>' : '') + '</div>' +
+      '<div class="bd"><div class="nm">' + esc(a.name) + ' <span class="kind">' + (a.kind === '개' ? '강아지' : esc(a.kind)) + '</span></div>' +
+      '<div class="meta"><span>' + (a.sex === '수컷' ? '♂' : '♀') + ' ' + esc(a.sex) + '</span><span>' + IC.age + ageText(a.age) + '</span><span>' + IC.kg + esc(a.weight) + 'kg</span></div></div></div>';
   }
-  function bindCards(root){ root.querySelectorAll('[data-animal]').forEach(function(b){ b.onclick = function(){ go('detail', b.dataset.animal); }; }); }
-
+  function bindCards(root){
+    root.querySelectorAll('[data-animal]').forEach(function(c){
+      c.onclick = function(e){
+        var f = e.target.closest('[data-fav]');
+        if (f){ e.stopPropagation(); var list = favs(), k = list.indexOf(f.dataset.fav); if (k >= 0) list.splice(k, 1); else list.push(f.dataset.fav); setFavs(list); var on = k < 0; f.classList.toggle('on', on); f.setAttribute('aria-pressed', String(on)); toast(on ? '관심 친구로 저장했어요' : '관심 친구에서 뺐어요'); return; }
+        go('detail', c.dataset.animal);
+      };
+      c.onkeydown = function(e){ if (e.key === 'Enter' && !e.target.closest('[data-fav]')) go('detail', c.dataset.animal); };
+    });
+  }
   function renderHome(){
     document.getElementById('newsCards').innerHTML = db.news.map(function(n){ return '<div class="news"><div class="im"><img loading="lazy" src="' + esc(safeUrl(n.img)) + '" alt=""></div><div class="bd"><b>' + esc(n.t) + '</b><span class="small">' + esc(n.d) + '</span></div></div>'; }).join('');
     var el = document.getElementById('homeAnimals');
