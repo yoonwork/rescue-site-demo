@@ -172,7 +172,7 @@ header.site{background:rgba(243,242,236,.92)}
 .news .im{margin:8px 8px 0;border-radius:14px;overflow:hidden}
 .home-top{display:grid;gap:14px;padding-top:18px}
 .greet{display:flex;align-items:center;gap:12px}
-.greet .av{width:42px;height:42px;border-radius:50%;background:var(--lime);color:#fff;display:grid;place-items:center;font-size:20px;flex:none}
+.greet .av{width:42px;height:42px;border-radius:50%;background:var(--lime);color:var(--brand);color:#fff;display:grid;place-items:center;font-size:20px;flex:none}
 .greet b{display:block;font-size:16px}
 .greet span{font-size:13px;color:var(--ink-3)}
 .search{display:flex;gap:8px}
@@ -186,7 +186,7 @@ header.site{background:rgba(243,242,236,.92)}
 .banner p{color:#e7e9e0;margin:0 0 14px}
 .quick{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .quick button{border:1px solid var(--line);background:#fff;border-radius:18px;padding:14px 8px;font-weight:700;font-size:13.5px;display:flex;flex-direction:column;align-items:center;gap:6px}
-.quick button i{font-style:normal;width:40px;height:40px;border-radius:12px;background:var(--bg);display:grid;place-items:center;font-size:20px}
+.quick button i{font-style:normal;width:40px;height:40px;border-radius:12px;background:var(--bg);display:grid;place-items:center;color:var(--brand)}
 .stats{margin:2px 0 0}
 .stats b{color:var(--brand)}
 .sec-h{display:flex;align-items:baseline;justify-content:space-between;margin:26px 0 12px}
@@ -208,9 +208,10 @@ header.site{background:rgba(243,242,236,.92)}
   .float{display:none}
   .tabbar{display:grid;grid-template-columns:repeat(4,1fr);position:fixed;left:0;right:0;bottom:0;z-index:55;background:#fff;border-top:1px solid var(--line);padding:6px 0 calc(6px + env(safe-area-inset-bottom))}
   .tabbar button{border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11.5px;font-weight:600;color:var(--ink-3);padding:4px 0;min-height:48px}
-  .tabbar button i{font-style:normal;font-size:20px;line-height:1;filter:grayscale(1);opacity:.7}
+  .tabbar button i{font-style:normal;line-height:0;color:var(--ink-3)}
   .tabbar button.on{color:var(--brand)}
-  .tabbar button.on i{filter:none;opacity:1}
+  .tabbar button.on i{color:var(--brand)}
+  .tabbar button.on{font-weight:800}
   .filters{grid-template-columns:1fr 1fr}
   .banner{min-height:200px;padding:22px 18px}
   .toast{bottom:calc(90px + env(safe-area-inset-bottom))}
@@ -244,10 +245,10 @@ header.site{background:rgba(243,242,236,.92)}
   <!-- 메인 -->
   <section class="page" id="p-home">
     <div class="wrap home-top">
-      <div class="greet"><span class="av">🐾</span><div><b>안녕하세요 👋</b><span>오늘도 함께해 주셔서 고마워요</span></div></div>
+      <div class="greet"><span class="av"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="10" r="1.8"/><circle cx="10" cy="6" r="1.8"/><circle cx="14" cy="6" r="1.8"/><circle cx="18" cy="10" r="1.8"/><path d="M12 12c-3 0-5.5 3.2-5.5 5.4 0 1.6 1.3 2.6 2.9 2.6 1 0 1.7-.5 2.6-.5s1.6.5 2.6.5c1.6 0 2.9-1 2.9-2.6C17.5 15.2 15 12 12 12z"/></svg></span><div><b>안녕하세요</b><span>오늘도 함께해 주셔서 고마워요</span></div></div>
       <form class="search" id="homeSearch" role="search"><input id="homeQ" type="search" placeholder="이름으로 친구 찾기 (예: 보리)" aria-label="이름으로 찾기"><button type="submit" aria-label="찾기"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></button></form>
       <div class="banner"><img src="https://placedog.net/1200/700?id=21" alt="" loading="eager"><h1 data-i18n="heroT">구조부터 입양까지,<br>끝까지 책임집니다</h1><p data-i18n="heroS">위기에 놓인 동물을 구조하고, 치료하고, 평생 가족을 찾아 줍니다.</p><div><button class="btn lime" data-page="donate" type="button" data-i18n="cta1">정기후원 하기</button></div></div>
-      <div class="quick"><button type="button" data-page="adopt"><i>🐶</i><span data-i18n="cta2">입양하기</span></button><button type="button" data-page="donate"><i>💛</i><span>후원하기</span></button><button type="button" data-page="volunteer"><i>🤝</i><span>봉사 신청</span></button></div>
+      <div class="quick"><button type="button" data-page="adopt"><i><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="10" r="1.8"/><circle cx="10" cy="6" r="1.8"/><circle cx="14" cy="6" r="1.8"/><circle cx="18" cy="10" r="1.8"/><path d="M12 12c-3 0-5.5 3.2-5.5 5.4 0 1.6 1.3 2.6 2.9 2.6 1 0 1.7-.5 2.6-.5s1.6.5 2.6.5c1.6 0 2.9-1 2.9-2.6C17.5 15.2 15 12 12 12z"/></svg></i><span data-i18n="cta2">입양하기</span></button><button type="button" data-page="donate"><i><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg></i><span>후원하기</span></button><button type="button" data-page="volunteer"><i><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 11V6.5a1.5 1.5 0 0 1 3 0V11"/><path d="M10 10V5a1.5 1.5 0 0 1 3 0v5"/><path d="M13 10V6a1.5 1.5 0 0 1 3 0v6"/><path d="M16 11.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6h-1a6 6 0 0 1-5-2.7L4.6 14.6a1.5 1.5 0 0 1 2.4-1.8L7 13"/></svg></i><span>봉사 신청</span></button></div>
       <div class="stats"><div><b>1,284</b><span class="small" data-i18n="s1">구조한 동물</span></div><div><b>963</b><span class="small" data-i18n="s2">입양 간 가족</span></div><div><b>412</b><span class="small" data-i18n="s3">정기 후원자</span></div></div>
     </div>
     <div class="wrap" style="padding-top:0">
@@ -262,7 +263,7 @@ header.site{background:rgba(243,242,236,.92)}
   <section class="page wrap" id="p-adopt" hidden>
     <h1 data-i18n="m3">입양&amp;임시보호</h1>
     <p class="muted">이름이나 조건으로 찾아보세요. 사진은 화면에 보일 때 불러와서 빨라요.</p>
-    <div class="chips" data-sel="fKind"><button type="button" data-v="" class="on">전체</button><button type="button" data-v="개">🐶 강아지</button><button type="button" data-v="고양이">🐱 고양이</button></div>
+    <div class="chips" data-sel="fKind"><button type="button" data-v="" class="on">전체</button><button type="button" data-v="개">강아지</button><button type="button" data-v="고양이">고양이</button></div>
     <div class="chips" data-sel="fStatus"><button type="button" data-v="" class="on">모든 상태</button><button type="button" data-v="입양 가능">입양 가능</button><button type="button" data-v="임시보호 중">임시보호 중</button><button type="button" data-v="입양 심사 중">심사 중</button><button type="button" data-v="입양 완료">입양 완료</button></div>
     <button class="more-f" id="moreF" type="button" aria-expanded="false">상세 조건 (이름·성별·나이·체중) ▾</button>
     <div class="filters" id="moreBox" hidden>
@@ -285,7 +286,7 @@ header.site{background:rgba(243,242,236,.92)}
     <div class="empty">이 메뉴는 공고의 화면설계서에 맞춰 만들어요. 데모에서는 '입양&amp;임시보호'와 '쉬운 관리자'를 먼저 보여 드려요.</div>
   </section>
 
-  <nav class="tabbar" aria-label="아래 메뉴"><button type="button" data-page="home"><i>🏠</i>홈</button><button type="button" data-page="adopt"><i>🐾</i>입양</button><button type="button" data-page="donate"><i>💛</i>후원</button><button type="button" data-page="contact"><i>💬</i>문의</button></nav>
+  <nav class="tabbar" aria-label="아래 메뉴"><button type="button" data-page="home"><i><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V9.5"/></svg></i>홈</button><button type="button" data-page="adopt"><i><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="10" r="1.8"/><circle cx="10" cy="6" r="1.8"/><circle cx="14" cy="6" r="1.8"/><circle cx="18" cy="10" r="1.8"/><path d="M12 12c-3 0-5.5 3.2-5.5 5.4 0 1.6 1.3 2.6 2.9 2.6 1 0 1.7-.5 2.6-.5s1.6.5 2.6.5c1.6 0 2.9-1 2.9-2.6C17.5 15.2 15 12 12 12z"/></svg></i>입양</button><button type="button" data-page="donate"><i><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg></i>후원</button><button type="button" data-page="contact"><i><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg></i>문의</button></nav>
   <div class="float"><button class="p" data-page="adopt" type="button">입양</button><button data-page="donate" type="button">후원</button><button data-page="contact" type="button">문의</button></div>
 </div>
 
